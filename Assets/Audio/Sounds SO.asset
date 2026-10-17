@@ -1,0 +1,179 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 806e13dd093826f42b76e6feeb1b8564, type: 3}
+  m_Name: Sounds SO
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: UICLICK
+    volume: 1
+    loop: 0
+    bypassReverbZones: 1
+    mixer: {fileID: -1753747779835290818, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: 9ff4c8917cb549a4e8978abba9969169, type: 3}
+    - {fileID: 8300000, guid: be966a494bbba0a438d006cf9a7c1920, type: 3}
+    - {fileID: 8300000, guid: ff2d11efe1f8de0438d2ec6c03e8717f, type: 3}
+  - name: BARRELHIT
+    volume: 1
+    loop: 0
+    bypassReverbZones: 0
+    mixer: {fileID: 0}
+    sounds: []
+  - name: SLIDE
+    volume: 1
+    loop: 1
+    bypassReverbZones: 0
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: 710790a3f0de3f149babea86869d6445, type: 3}
+  - name: JUMP
+    volume: 1
+    loop: 0
+    bypassReverbZones: 0
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: c0562bcd8ccf7584f8146b9dcd33d872, type: 3}
+  - name: FALL
+    volume: 1
+    loop: 0
+    bypassReverbZones: 0
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: 0bc770ecba0f3f64d9ae9145e0b03220, type: 3}
+  - name: FOOTSTEPCONCRETE
+    volume: 1
+    loop: 0
+    bypassReverbZones: 0
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: b341c431340926b4db5b1b6c06cdcbb6, type: 3}
+    - {fileID: 8300000, guid: 45c617e99c0670e4ebaa744d3b0d653f, type: 3}
+    - {fileID: 8300000, guid: 5d813c813ed61a848a86834690ff8f0e, type: 3}
+    - {fileID: 8300000, guid: 6048768f429dc8a47955815b567adf67, type: 3}
+  - name: LEVER
+    volume: 1
+    loop: 0
+    bypassReverbZones: 0
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: cd91f573e67a5b24089858661330383c, type: 3}
+  - name: UICLICK2
+    volume: 1
+    loop: 0
+    bypassReverbZones: 1
+    mixer: {fileID: -1753747779835290818, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: 04b2579b9d305f14d8f318b3a74cb200, type: 3}
+    - {fileID: 8300000, guid: c0e1b383a47f02048ae4cf4e716fc593, type: 3}
+    - {fileID: 8300000, guid: 64575021074fb3443b86b5e8fbda549c, type: 3}
+  - name: UICLICK3
+    volume: 1
+    loop: 0
+    bypassReverbZones: 0
+    mixer: {fileID: 0}
+    sounds: []
+  - name: LIGHTBREAK
+    volume: 1
+    loop: 0
+    bypassReverbZones: 0
+    mixer: {fileID: 0}
+    sounds: []
+  - name: FOOTSTEPMETAL
+    volume: 1
+    loop: 0
+    bypassReverbZones: 0
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: b6d018f7933e1e74babb23ac5e8af8b1, type: 3}
+    - {fileID: 8300000, guid: dafb4863280119943b91e2da5d2b8532, type: 3}
+    - {fileID: 8300000, guid: 51a5c5c1b355d614294d29c37b828945, type: 3}
+    - {fileID: 8300000, guid: fc8395727eff5bd49a620d2d91cd0dd3, type: 3}
+  - name: TVGLITCH
+    volume: 1
+    loop: 0
+    bypassReverbZones: 0
+    mixer: {fileID: 0}
+    sounds: []
+  - name: EARTHQUAKE
+    volume: 1
+    loop: 0
+    bypassReverbZones: 0
+    mixer: {fileID: 0}
+    sounds: []
+  - name: PERKSELECTCLICK
+    volume: 1
+    loop: 0
+    bypassReverbZones: 0
+    mixer: {fileID: 0}
+    sounds: []
+  - name: UIDENIED
+    volume: 1
+    loop: 0
+    bypassReverbZones: 0
+    mixer: {fileID: 0}
+    sounds: []
+  - name: UICONFIRM
+    volume: 1
+    loop: 0
+    bypassReverbZones: 1
+    mixer: {fileID: -1753747779835290818, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: bee8087b9959b284ab973407f2f07dbd, type: 3}
+  - name: WING
+    volume: 1
+    loop: 0
+    bypassReverbZones: 1
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: 9443fb13ef24a6342a52bbe2d1f2fd80, type: 3}
+  - name: ANGRYE3
+    volume: 1
+    loop: 1
+    bypassReverbZones: 1
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}
+  - name: ANGRYF2
+    volume: 1
+    loop: 1
+    bypassReverbZones: 1
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: 55be796263426e4458aec8d1f7fd24be, type: 3}
+  - name: ANGRYG3
+    volume: 1
+    loop: 1
+    bypassReverbZones: 1
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: e4c4dd71b69ffa94ea7d564faa16e048, type: 3}
+  - name: E4
+    volume: 1
+    loop: 1
+    bypassReverbZones: 1
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: 86cc09364564892468839877e2d97e22, type: 3}
+  - name: F2
+    volume: 1
+    loop: 1
+    bypassReverbZones: 1
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: 7d9f270d47388794f89870e71d7919ac, type: 3}
+  - name: G4
+    volume: 1
+    loop: 1
+    bypassReverbZones: 1
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: 376c9d2ede3b7584a8aa4264047478e4, type: 3}
