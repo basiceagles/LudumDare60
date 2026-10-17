@@ -8,7 +8,7 @@ namespace LudumDare60.Switchboard
     public class SwitchboardGame : MonoBehaviour
     {
         public PhoneCall[] calls = new PhoneCall[0];
-        public CanvasGroup dialoguePanel;
+        public GameObject dialoguePanel;
         public TMP_Text speakerText;
         public TMP_Text dialogueText;
         [Min(1)] public float charactersPerSecond = 38;
@@ -56,7 +56,7 @@ namespace LudumDare60.Switchboard
 
         private void Start()
         {
-            dialoguePanel.alpha = 0f;
+            SetVisible(false);
 
             homePos = plug.position;
             homeRot = plug.rotation;
@@ -138,7 +138,7 @@ namespace LudumDare60.Switchboard
         public void RestartShift()
         {
             DOTween.Kill(plug);
-            DOTween.Kill(dialoguePanel);
+            
             typingTween?.Kill();
             dragging = false;
             isTyping = false;
@@ -149,7 +149,7 @@ namespace LudumDare60.Switchboard
         private void NextCall()
         {
             phase = Phase.Transition;
-            dialoguePanel.alpha = 0f;
+            SetVisible(false);
             ReturnHome();
 
             if (++callIndex >= calls.Length)
@@ -182,7 +182,7 @@ namespace LudumDare60.Switchboard
             dialogueText.maxVisibleCharacters = 0;
             dialogueText.ForceMeshUpdate();
 
-            dialoguePanel.DOFade(1f, 0.2f);
+            SetVisible(true);
 
             int total = dialogueText.textInfo.characterCount;
             float duration = total / charactersPerSecond;
@@ -195,6 +195,14 @@ namespace LudumDare60.Switchboard
                 {
                     isTyping = false;
                 });
+        }
+
+        private void SetVisible(bool visible)
+        {
+            if (dialoguePanel != null)
+            {
+                dialoguePanel.SetActive(visible);
+            }
         }
 
         private void FinishTyping()
@@ -218,7 +226,7 @@ namespace LudumDare60.Switchboard
             }
             else if (phase == Phase.Conversation)
             {
-                dialoguePanel.DOFade(0f, 0.2f);
+                SetVisible(false);
                 phase = Phase.Routing;
             }
             else
