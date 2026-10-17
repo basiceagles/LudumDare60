@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a28d9b7530256eae7f40d29c8a7c2c1b, type: 3}
+  m_Name: 04_На_остановке
+  m_EditorClassIdentifier:
+  title: "На остановке"
+  correctDestination: 2
+  conversation:
+  - speaker: "Прохожий"
+    text: "Человек на остановке внезапно упал. На обращения не отвечает."
+  - speaker: "Прохожий"
+    text: "Я рядом с ним, вокруг уже собрались люди. Нужны медики, адрес сейчас назову."
+  - speaker: "Оператор"
+    text: "Я записываю адрес и соединяю вызов."
+  policeReply:
+  - speaker: "Дежурный полиции"
+    text: "По этому описанию вызывают медиков. Перенаправьте звонок на медицинскую линию."
+  psychiatristReply:
+  - speaker: "Регистратор"
+    text: "Это запись на плановый приём. Вызов с остановки должен принять диспетчер скорой."
+  ambulanceReply:
+  - speaker: "Диспетчер скорой"
+    text: "Медицинский вызов принят. Оставайтесь на линии с диспетчером."
+  - speaker: "Прохожий"
+    text: "Да, я здесь. Спасибо, что быстро соединили."
+  fireReply:
+  - speaker: "Пожарный"
+    text: "По сообщению требуется медицинская бригада, а не пожарная служба."
+  informationReply:
+  - speaker: "Справочная"
+    text: "Я не могу принять медицинский вызов. Нужна линия скорой помощи."

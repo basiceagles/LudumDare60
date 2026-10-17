@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a28d9b7530256eae7f40d29c8a7c2c1b, type: 3}
+  m_Name: 02_За_дверью
+  m_EditorClassIdentifier:
+  title: "За дверью"
+  correctDestination: 0
+  conversation:
+  - speaker: "Мужчина"
+    text: "Кто-то уже несколько минут пытается вскрыть дверь моей мастерской."
+  - speaker: "Мужчина"
+    text: "Я заперся в подсобке. Слышу, как они разбили окно и забирают инструменты."
+  - speaker: "Оператор"
+    text: "Адрес записал. Сейчас соединю вас с нужной службой."
+  policeReply:
+  - speaker: "Дежурный полиции"
+    text: "Адрес получен. Принимаем сообщение о проникновении."
+  - speaker: "Мужчина"
+    text: "Да, всё верно. Пожалуйста, оставайтесь на линии."
+  psychiatristReply:
+  - speaker: "Регистратор"
+    text: "Это запись к врачу. Сообщение о взломе нужно передать в полицию."
+  ambulanceReply:
+  - speaker: "Диспетчер скорой"
+    text: "Вы сообщили о проникновении, а не о пострадавшем. Соединение направлено не в ту службу."
+  fireReply:
+  - speaker: "Пожарный"
+    text: "Возгорания по этому адресу не заявлено. Это линия другой службы."
+  informationReply:
+  - speaker: "Справочная"
+    text: "Справочная не принимает такие сообщения. Ему нужна полиция."

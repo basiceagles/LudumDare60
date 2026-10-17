@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a28d9b7530256eae7f40d29c8a7c2c1b, type: 3}
+  m_Name: 03_Запах_дыма
+  m_EditorClassIdentifier:
+  title: "Запах дыма"
+  correctDestination: 3
+  conversation:
+  - speaker: "Женщина"
+    text: "Из подвала нашего дома идёт густой дым. Уже весь подъезд в едком запахе."
+  - speaker: "Женщина"
+    text: "За маленьким окном видно оранжевое свечение. Соседей я предупредила."
+  - speaker: "Оператор"
+    text: "Понял вас. Передаю сообщение."
+  policeReply:
+  - speaker: "Дежурный полиции"
+    text: "Здесь сообщают о возгорании. Передайте вызов пожарной службе."
+  psychiatristReply:
+  - speaker: "Регистратор"
+    text: "Это медицинская запись, мы не принимаем сообщения о пожаре."
+  ambulanceReply:
+  - speaker: "Диспетчер скорой"
+    text: "Вызов о дыме и огне попал не на ту линию. В первую очередь он адресован пожарной службе."
+  fireReply:
+  - speaker: "Пожарный"
+    text: "Адрес и сообщение о дыме приняты. Вызов зарегистрирован."
+  - speaker: "Женщина"
+    text: "Спасибо. Именно с вами я и пыталась связаться."
+  informationReply:
+  - speaker: "Справочная"
+    text: "В этом случае справочной информации недостаточно. Соедините с пожарной службой."
