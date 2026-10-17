@@ -12,10 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a28d9b7530256eae7f40d29c8a7c2c1b, type: 3}
   m_Name: PhoneCall
   m_EditorClassIdentifier: 
-  title: 
+  title: test
   correctDestination: 0
-  conversation: []
-  policeReply: []
+  conversation:
+  - speaker: 1test1
+    text: test1
+  - speaker: 1test1
+    text: test2
+  policeReply:
+  - speaker: test3
+    text: 4444
   psychiatristReply: []
   ambulanceReply: []
   fireReply: []
