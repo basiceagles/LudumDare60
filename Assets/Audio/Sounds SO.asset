@@ -109,26 +109,27 @@ MonoBehaviour:
     bypassReverbZones: 0
     mixer: {fileID: 0}
     sounds: []
-  - name: PERKSELECTCLICK
+  - name: MECHANICALBUTTON
+    volume: 1
+    loop: 0
+    bypassReverbZones: 0
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: c5909ae2d2a51dd499d7f0261f4d9433, type: 3}
+  - name: PLUGIN
     volume: 1
     loop: 0
     bypassReverbZones: 0
     mixer: {fileID: 0}
     sounds: []
-  - name: UIDENIED
-    volume: 1
-    loop: 0
-    bypassReverbZones: 0
-    mixer: {fileID: 0}
-    sounds: []
-  - name: UICONFIRM
+  - name: METALPICKUP
     volume: 1
     loop: 0
     bypassReverbZones: 1
     mixer: {fileID: -1753747779835290818, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
     sounds:
     - {fileID: 8300000, guid: bee8087b9959b284ab973407f2f07dbd, type: 3}
-  - name: WING
+  - name: METALDROP
     volume: 1
     loop: 0
     bypassReverbZones: 1
