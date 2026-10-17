@@ -20,7 +20,7 @@ namespace SmallHedge.SoundManager
             if (soundList == null)
                 return;
 
-            string[] names = Enum.GetNames(typeof(SoundType));
+            string[] names = Array.FindAll(Enum.GetNames(typeof(SoundType)), name => name != nameof(SoundType.NONE));
             bool differentSize = names.Length != soundList.Length;
 
             Dictionary<string, SoundList> sounds = new();
@@ -29,7 +29,10 @@ namespace SmallHedge.SoundManager
             {
                 for (int i = 0; i < soundList.Length; ++i)
                 {
-                    sounds.Add(soundList[i].name, soundList[i]);
+                    if (!string.IsNullOrEmpty(soundList[i].name))
+                    {
+                        sounds[soundList[i].name] = soundList[i];
+                    }
                 }
             }
 
@@ -38,24 +41,19 @@ namespace SmallHedge.SoundManager
             {
                 string currentName = names[i];
                 soundList[i].name = currentName;
-                if (soundList[i].volume == 0) soundList[i].volume = 1;
 
                 if (differentSize)
                 {
-                    if (sounds.ContainsKey(currentName))
+                    if (sounds.TryGetValue(currentName, out SoundList current))
                     {
-                        SoundList current = sounds[currentName];
-                        UpdateElement(ref soundList[i], current.volume, current.sounds, current.mixer);
+                        soundList[i] = current;
                     }
                     else
-                        UpdateElement(ref soundList[i], 1, new AudioClip[0], null);
-
-                    static void UpdateElement(ref SoundList element, float volume, AudioClip[] sounds, AudioMixerGroup mixer)
                     {
-                        element.volume = volume;
-                        element.sounds = sounds;
-                        element.mixer = mixer;
+                        soundList[i] = new SoundList(true);
+                        soundList[i].sounds = Array.Empty<AudioClip>();
                     }
+                    soundList[i].name = currentName;
                 }
             }
         }
