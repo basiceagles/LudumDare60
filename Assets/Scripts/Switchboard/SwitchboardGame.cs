@@ -1,398 +1,555 @@
 using DG.Tweening;
+using SmallHedge.SoundManager;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace LudumDare60.Switchboard
+[System.Serializable]
+public class SwitchboardSocket
 {
-    public class SwitchboardGame : MonoBehaviour
+    public Collider collider;
+    public string lineId;
+}
+
+[System.Serializable]
+public class SwitchboardSounds
+{
+    public SoundType plugPickup = SoundType.PLUG_PICKUP;
+    public SoundType plugDrag = SoundType.PLUG_DRAG;
+    public SoundType plugInsert = SoundType.PLUG_INSERT;
+    public SoundType plugPutDown = SoundType.PLUG_PUT_DOWN;
+    public SoundType plugCancel = SoundType.PLUG_CANCEL;
+    public SoundType socketHover = SoundType.SOCKET_HOVER;
+    public SoundType correctConnection = SoundType.CONNECTION_CORRECT;
+    public SoundType wrongConnection = SoundType.CONNECTION_WRONG;
+    public SoundType dialogueNext = SoundType.DIALOGUE_NEXT;
+    public SoundType dialogueTyping = SoundType.DIALOGUE_TYPING;
+    public SoundType dialogueFinished = SoundType.DIALOGUE_FINISHED;
+    public SoundType shiftFinished = SoundType.SHIFT_FINISHED;
+}
+
+public class SwitchboardGame : MonoBehaviour
+{
+    public PhoneReceiver receiver;
+    public SwitchboardSounds sounds = new SwitchboardSounds();
+    public PhoneCall[] calls = new PhoneCall[0];
+    public GameObject dialoguePanel;
+    public Transform characterPosition;
+    public PhoneCharacterView characterPrefab;
+    public TMP_Text speakerText;
+    public TMP_Text dialogueText;
+    [Min(1)] public float charactersPerSecond = 38;
+
+    public Transform plug;
+    public Camera viewCamera;
+    public Collider grabCollider;
+    public Collider answerCallButton;
+    public SwitchboardSocket[] sockets = new SwitchboardSocket[0];
+    public Color hoverColor = new Color(0.95f, 0.7f, 0.3f);
+    public Transform plugTip;
+
+    public Transform cableAnchor;
+    public LineRenderer cable;
+
+    private enum Phase
     {
-        public PhoneCall[] calls = new PhoneCall[0];
-        public GameObject dialoguePanel;
-        public TMP_Text speakerText;
-        public TMP_Text dialogueText;
-        [Min(1)] public float charactersPerSecond = 38;
+        IncomingCall,
+        Conversation,
+        Routing,
+        Reply,
+        Transition,
+        Finished
+    }
 
-        public Transform plug;
-        public Camera viewCamera;
-        public Collider grabCollider;
-        public Collider answerCallButton;
-        public Collider[] sockets = new Collider[5];
-        public Color hoverColor = new Color(0.95f, 0.7f, 0.3f);
-        public float tipOffset = 0.48f;
+    private Phase phase = Phase.Transition;
+    private PhoneLine[] currentLines;
+    private int callIndex = -1;
+    private int lineIndex;
+    private bool dragging;
+    private PhoneCharacterView characterView;
 
-        public Transform cableAnchor;
-        public LineRenderer cable;
+    private Vector3 homePos;
+    private Quaternion homeRot;
+    private Vector3 localPlugTip;
+    private Plane dragPlane;
+    private Renderer[] socketRenderers;
+    private Color[] socketColors;
+    private MaterialPropertyBlock highlight;
+    private int hoveredSocket = -1;
 
-        private enum Phase
+    public bool ReadyForConnection => phase == Phase.Routing;
+
+    private void Start()
+    {
+        if (receiver == null)
         {
-            IncomingCall,
-            Conversation,
-            Routing,
-            Reply,
-            Transition,
-            Finished
+            receiver = FindFirstObjectByType<PhoneReceiver>();
+        }
+        if (viewCamera == null)
+        {
+            viewCamera = Camera.main;
+        }
+        if (plug == null && grabCollider != null)
+        {
+            plug = grabCollider.transform;
+        }
+        if (grabCollider == null && plug != null)
+        {
+            grabCollider = plug.GetComponent<Collider>();
+        }
+        if (dialoguePanel != null)
+        {
+            dialoguePanel.SetActive(false);
         }
 
-        private Phase phase;
-        private PhoneLine[] currentLines;
-        private int callIndex = -1;
-        private int lineIndex;
-        private bool dragging;
-        private bool isTyping;
-
-        private Vector3 homePos;
-        private Quaternion homeRot;
-        private Plane dragPlane;
-        private Renderer[] socketRenderers;
-        private Color[] socketColors;
-        private MaterialPropertyBlock highlight;
-        private int hoveredSocket = -1;
-
-        private Tween typingTween;
-        private Tween plugTween;
-
-        public bool ReadyForConnection => phase == Phase.Routing;
-
-        private void Start()
+        if (plug != null)
         {
-            SetVisible(false);
-
-            if (plug != null)
+            homePos = plug.position;
+            homeRot = plug.rotation;
+            localPlugTip = plugTip != null ? plug.InverseTransformPoint(plugTip.position) : Vector3.zero;
+            if (plugTip == null && grabCollider is BoxCollider plugBox)
             {
-                homePos = plug.position;
-                homeRot = plug.rotation;
+                localPlugTip = plug.InverseTransformPoint(plugBox.transform.TransformPoint(
+                    plugBox.center + Vector3.up * plugBox.size.y * 0.5f));
             }
-
-            if (sockets.Length > 0 && sockets[0] != null)
-            {
-                dragPlane = new Plane(Vector3.up, sockets[0].bounds.center);
-                highlight = new MaterialPropertyBlock();
-
-                socketRenderers = new Renderer[sockets.Length];
-                socketColors = new Color[sockets.Length];
-                for (int i = 0; i < sockets.Length; i++)
-                {
-                    socketRenderers[i] = sockets[i].GetComponent<Renderer>();
-                    if (socketRenderers[i] != null)
-                    {
-                        socketColors[i] = socketRenderers[i].sharedMaterial.GetColor("_BaseColor");
-                    }
-                }
-            }
-
-            if (cable != null)
-            {
-                cable.positionCount = 24;
-            }
-
-            RestartShift();
         }
 
-        private void Update()
+        Vector3 planePoint = homePos;
+        for (int i = 0; i < sockets.Length; i++)
         {
-            if (Mouse.current == null)
+            if (sockets[i] != null && sockets[i].collider != null)
             {
-                return;
+                planePoint = sockets[i].collider.bounds.center;
+                break;
             }
+        }
+        if (viewCamera != null)
+        {
+            dragPlane = new Plane(-viewCamera.transform.forward, planePoint);
+        }
 
-            if (ReadyForConnection)
+        highlight = new MaterialPropertyBlock();
+        socketRenderers = new Renderer[sockets.Length];
+        socketColors = new Color[sockets.Length];
+        for (int i = 0; i < sockets.Length; i++)
+        {
+            if (sockets[i] == null || sockets[i].collider == null)
             {
-                DragPlug();
-                return;
+                continue;
             }
-
-            if (!Mouse.current.leftButton.wasPressedThisFrame)
+            socketRenderers[i] = sockets[i].collider.GetComponent<Renderer>();
+            if (socketRenderers[i] != null && socketRenderers[i].sharedMaterial != null)
             {
-                return;
+                socketColors[i] = socketRenderers[i].sharedMaterial.GetColor("_BaseColor");
             }
+        }
 
-            Ray ray = viewCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        if (cable != null)
+        {
+            cable.positionCount = 24;
+        }
 
-            if (phase == Phase.IncomingCall)
-            {
-                if (answerCallButton != null)
+        RestartShift();
+    }
+
+    private void Update()
+    {
+        if (Mouse.current == null)
+        {
+            return;
+        }
+
+        if (phase == Phase.Routing)
+        {
+            DragPlug();
+            return;
+        }
+
+        if (!Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            return;
+        }
+
+        switch (phase)
+        {
+            case Phase.IncomingCall:
+                if (answerCallButton != null && viewCamera != null)
                 {
-                    bool isHit = answerCallButton.Raycast(ray, out _, 100f) ||
-                                 (Physics.Raycast(ray, out RaycastHit hit, 100f) && (hit.collider == answerCallButton || hit.transform == answerCallButton.transform));
-
-                    if (isHit)
+                    Ray ray = viewCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+                    if (answerCallButton.Raycast(ray, out _, 100f))
                     {
+                        answerCallButton.transform.DOKill();
                         answerCallButton.transform.DOPunchScale(Vector3.one * -0.15f, 0.2f);
                         StartConversation();
                     }
                 }
-                return;
-            }
+                break;
 
-            if (phase == Phase.Finished && calls.Length > 0)
-            {
-                RestartShift();
-                return;
-            }
-
-            if (phase == Phase.Conversation || phase == Phase.Reply)
-            {
+            case Phase.Conversation:
+            case Phase.Reply:
                 AdvanceDialogue();
-            }
+                break;
+
+            case Phase.Finished:
+                if (calls.Length > 0)
+                {
+                    RestartShift();
+                }
+                break;
+        }
+    }
+
+    public void RestartShift()
+    {
+        DOTween.Kill(this);
+        plug?.DOKill();
+        dialogueText?.DOKill();
+        dragging = false;
+        callIndex = -1;
+        NextCall();
+    }
+
+    public void HangUp()
+    {
+        if (callIndex < 0 || callIndex >= calls.Length)
+        {
+            return;
+        }
+        dialogueText?.DOKill();
+        dragging = false;
+        NextCall();
+    }
+
+    private void NextCall()
+    {
+        DOTween.Kill(this);
+        phase = Phase.Transition;
+        StopLoopSounds();
+        receiver?.SetIdle();
+        ShowCharacter(null);
+        if (dialoguePanel != null)
+        {
+            dialoguePanel.SetActive(false);
+        }
+        ReturnHome();
+
+        if (++callIndex >= calls.Length)
+        {
+            phase = Phase.Finished;
+            SoundManager.PlaySound(sounds.shiftFinished);
+            return;
         }
 
-        public void RestartShift()
+        float delay = callIndex == 0 ? (receiver != null ? Mathf.Max(0f, receiver.firstCallDelay) : 0f) : 0.35f;
+        DOVirtual.DelayedCall(delay, () =>
         {
-            if (plug != null)
-            {
-                DOTween.Kill(plug);
-            }
-            typingTween?.Kill();
-            dragging = false;
-            isTyping = false;
-            callIndex = -1;
-            NextCall();
-        }
-
-        private void NextCall()
-        {
-            phase = Phase.Transition;
-            SetVisible(false);
-            ReturnHome();
-
-            if (++callIndex >= calls.Length)
-            {
-                phase = Phase.Finished;
-                return;
-            }
-
             phase = Phase.IncomingCall;
+            receiver?.StartRinging();
+        }, false).SetLink(gameObject).SetId(this);
+    }
+
+    private void StartConversation()
+    {
+        receiver?.SetAccepted();
+        if (callIndex < 0)
+        {
+            callIndex = 0;
+        }
+        PlayDialogue(calls[callIndex].conversation, Phase.Conversation);
+    }
+
+    private void PlayDialogue(PhoneLine[] lines, Phase nextPhase)
+    {
+        phase = nextPhase;
+        currentLines = lines;
+        lineIndex = 0;
+        if (currentLines == null || currentLines.Length == 0)
+        {
+            FinishDialogue();
+            return;
+        }
+        ShowLine();
+    }
+
+    private void ShowLine()
+    {
+        SoundManager.PlaySound(sounds.dialogueNext);
+        SoundManager.PlaySound(sounds.dialogueTyping);
+        PhoneLine line = currentLines[lineIndex];
+        ShowCharacter(line.characterSprite != null ? line.characterSprite : calls[callIndex].characterSprite);
+        speakerText.text = line.speaker;
+        dialogueText.text = line.text;
+        dialogueText.maxVisibleCharacters = 0;
+        dialogueText.ForceMeshUpdate();
+
+        dialoguePanel.SetActive(true);
+
+        int total = dialogueText.textInfo.characterCount;
+        float duration = total / charactersPerSecond;
+
+        dialogueText.DOKill();
+        DOTween.To(() => dialogueText.maxVisibleCharacters, x => dialogueText.maxVisibleCharacters = x, total, duration)
+            .SetEase(Ease.Linear)
+            .SetTarget(dialogueText)
+            .OnComplete(() =>
+            {
+                SoundManager.StopSound(sounds.dialogueTyping);
+            });
+    }
+
+    private void ShowCharacter(Sprite sprite)
+    {
+        Transform parent = characterPosition != null ? characterPosition : dialoguePanel != null ? dialoguePanel.transform : null;
+        if (characterView == null && parent != null)
+        {
+            characterView = PhoneCharacterView.GetOrCreate(parent.gameObject, characterPrefab);
+        }
+        if (characterView != null && characterPosition != null)
+        {
+            characterView.AttachTo(characterPosition);
+        }
+        characterView?.ShowSprite(sprite);
+    }
+
+    private void AdvanceDialogue()
+    {
+        if (DOTween.IsTweening(dialogueText))
+        {
+            dialogueText.DOComplete();
+            return;
         }
 
-        private void StartConversation()
+        if (++lineIndex < currentLines.Length)
         {
-            PlayDialogue(calls[callIndex].conversation, Phase.Conversation);
-        }
-
-        private void PlayDialogue(PhoneLine[] lines, Phase nextPhase)
-        {
-            phase = nextPhase;
-            currentLines = lines;
-            lineIndex = 0;
             ShowLine();
         }
-
-        private void ShowLine()
+        else
         {
-            PhoneLine line = currentLines[lineIndex];
-            speakerText.text = line.speaker;
-            dialogueText.text = line.text;
-            dialogueText.maxVisibleCharacters = 0;
-            dialogueText.ForceMeshUpdate();
+            FinishDialogue();
+        }
+    }
 
-            SetVisible(true);
+    private void FinishDialogue()
+    {
+        ShowCharacter(null);
+        SoundManager.StopSound(sounds.dialogueTyping);
+        if (phase == Phase.Conversation)
+        {
+            SoundManager.PlaySound(sounds.dialogueFinished);
+            dialoguePanel.SetActive(false);
+            phase = Phase.Routing;
+        }
+        else
+        {
+            NextCall();
+        }
+    }
 
-            int total = dialogueText.textInfo.characterCount;
-            float duration = total / charactersPerSecond;
-            isTyping = true;
+    private void DragPlug()
+    {
+        if (viewCamera == null || plug == null || grabCollider == null)
+        {
+            return;
+        }
+        Ray ray = viewCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
 
-            typingTween?.Kill();
-            typingTween = DOTween.To(() => dialogueText.maxVisibleCharacters, x => dialogueText.maxVisibleCharacters = x, total, duration)
-                .SetEase(Ease.Linear)
-                .OnComplete(() =>
-                {
-                    isTyping = false;
-                });
+        if (!dragging && Mouse.current.leftButton.wasPressedThisFrame && grabCollider.Raycast(ray, out _, 100))
+        {
+            dragging = true;
+            SoundManager.PlaySound(sounds.plugPickup);
+            SoundManager.PlaySound(sounds.plugDrag);
+            grabCollider.enabled = false;
+            plug.DOKill();
         }
 
-        private void SetVisible(bool visible)
+        if (!dragging)
         {
-            if (dialoguePanel != null)
-            {
-                dialoguePanel.SetActive(visible);
-            }
+            return;
         }
 
-        private void FinishTyping()
+        if (dragPlane.Raycast(ray, out float dist))
         {
-            typingTween?.Kill();
-            dialogueText.maxVisibleCharacters = int.MaxValue;
-            isTyping = false;
+            plug.DOKill();
+            plug.DOMove(ray.GetPoint(dist), 0.05f);
+            plug.DORotateQuaternion(homeRot, 0.05f);
         }
 
-        private void AdvanceDialogue()
-        {
-            if (isTyping)
-            {
-                FinishTyping();
-                return;
-            }
+        int hovered = GetHoveredSocket(ray, out RaycastHit hit);
+        HighlightSocket(hovered);
 
-            if (++lineIndex < currentLines.Length)
+        if (Mouse.current.leftButton.wasReleasedThisFrame)
+        {
+            dragging = false;
+            SoundManager.StopSound(sounds.plugDrag);
+            if (hovered >= 0)
             {
-                ShowLine();
-            }
-            else if (phase == Phase.Conversation)
-            {
-                SetVisible(false);
-                phase = Phase.Routing;
+                ConnectTo(hovered, hit);
             }
             else
             {
-                NextCall();
+                CancelDrag();
             }
         }
+    }
 
-        private void DragPlug()
+    private int GetHoveredSocket(Ray ray, out RaycastHit nearestHit)
+    {
+        int hovered = -1;
+        nearestHit = default;
+        float minDist = 100f;
+        for (int i = 0; i < sockets.Length; i++)
         {
-            if (plug == null)
+            if (sockets[i] != null && sockets[i].collider != null && sockets[i].collider.Raycast(ray, out RaycastHit h, minDist))
             {
-                return;
-            }
-
-            Ray ray = viewCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
-
-            if (!dragging && Mouse.current.leftButton.wasPressedThisFrame && grabCollider.Raycast(ray, out _, 100))
-            {
-                dragging = true;
-                grabCollider.enabled = false;
-                plugTween?.Kill();
-            }
-
-            if (!dragging)
-            {
-                return;
-            }
-
-            if (dragPlane.Raycast(ray, out float dist))
-            {
-                Vector3 target = ray.GetPoint(dist) + Vector3.up * (tipOffset + 0.2f);
-                plug.position = Vector3.Lerp(plug.position, target, 1 - Mathf.Exp(-22 * Time.deltaTime));
-                plug.rotation = Quaternion.Slerp(plug.rotation, Quaternion.identity, 1 - Mathf.Exp(-22 * Time.deltaTime));
-            }
-
-            int hovered = -1;
-            for (int i = 0; i < sockets.Length; i++)
-            {
-                if (sockets[i].Raycast(ray, out _, 100))
-                {
-                    hovered = i;
-                    break;
-                }
-            }
-            HighlightSocket(hovered);
-
-            if (Mouse.current.leftButton.wasReleasedThisFrame)
-            {
-                dragging = false;
-                if (hovered >= 0)
-                {
-                    ConnectTo(hovered);
-                }
-                else
-                {
-                    CancelDrag();
-                }
+                hovered = i;
+                nearestHit = h;
+                minDist = h.distance;
             }
         }
+        return hovered;
+    }
 
-        public void ConnectTo(int socketIndex)
+    public void ConnectTo(int socketIndex)
+    {
+        if (socketIndex < 0 || socketIndex >= sockets.Length || sockets[socketIndex] == null || sockets[socketIndex].collider == null)
         {
-            if (socketIndex < 0 || socketIndex >= sockets.Length)
-            {
-                return;
-            }
-
-            phase = Phase.Transition;
-            HighlightSocket(-1);
-
-            Vector3 target = sockets[socketIndex].bounds.center + Vector3.up * tipOffset;
-
-            if (plug != null)
-            {
-                plugTween?.Kill();
-                plugTween = DOTween.Sequence()
-                    .Join(plug.DOMove(target, 0.25f).SetEase(Ease.OutBack))
-                    .Join(plug.DORotateQuaternion(Quaternion.identity, 0.25f).SetEase(Ease.OutQuad))
-                    .OnComplete(() =>
-                    {
-                        PhoneLine[] reply = calls[callIndex].ReplyFor((ServiceDestination)socketIndex);
-                        PlayDialogue(reply, Phase.Reply);
-                    });
-            }
-            else
-            {
-                PhoneLine[] reply = calls[callIndex].ReplyFor((ServiceDestination)socketIndex);
-                PlayDialogue(reply, Phase.Reply);
-            }
+            return;
         }
 
-        private void ReturnHome(float duration = 0.35f)
+        Collider socket = sockets[socketIndex].collider;
+        Ray ray = new Ray(viewCamera.transform.position, socket.bounds.center - viewCamera.transform.position);
+        if (socket.Raycast(ray, out RaycastHit hit, 100f))
         {
-            HighlightSocket(-1);
-            if (grabCollider != null)
-            {
-                grabCollider.enabled = false;
-            }
-
-            if (plug != null)
-            {
-                plugTween?.Kill();
-                plugTween = DOTween.Sequence()
-                    .Join(plug.DOMove(homePos, duration).SetEase(Ease.OutQuad))
-                    .Join(plug.DORotateQuaternion(homeRot, duration).SetEase(Ease.OutQuad))
-                    .OnComplete(() =>
-                    {
-                        if (grabCollider != null)
-                        {
-                            grabCollider.enabled = true;
-                        }
-                    });
-            }
+            ConnectTo(socketIndex, hit);
         }
+    }
 
-        private void CancelDrag()
+    private void ConnectTo(int socketIndex, RaycastHit hit)
+    {
+        if (!ReadyForConnection)
         {
-            phase = Phase.Transition;
-            ReturnHome();
-            DOVirtual.DelayedCall(0.35f, () =>
-            {
-                phase = Phase.Routing;
-            });
+            return;
         }
 
-        private void HighlightSocket(int index)
+        if (string.IsNullOrWhiteSpace(sockets[socketIndex].lineId))
         {
-            if (hoveredSocket == index)
-            {
-                return;
-            }
-            hoveredSocket = index;
-
-            for (int i = 0; i < socketRenderers.Length; i++)
-            {
-                if (socketRenderers[i] == null)
-                {
-                    continue;
-                }
-                highlight.SetColor("_BaseColor", i == index ? hoverColor : socketColors[i]);
-                highlight.SetColor("_EmissionColor", i == index ? hoverColor * 0.8f : Color.black);
-                socketRenderers[i].SetPropertyBlock(highlight);
-            }
+            CancelDrag();
+            return;
         }
 
-        private void LateUpdate()
+        phase = Phase.Transition;
+        HighlightSocket(-1);
+
+        Quaternion targetRot = Quaternion.FromToRotation(homeRot * Vector3.up, -hit.normal) * homeRot;
+        Vector3 center = sockets[socketIndex].collider.bounds.center;
+        Vector3 surface = center + hit.normal * Vector3.Dot(hit.point - center, hit.normal);
+        Vector3 target = surface - targetRot * Vector3.Scale(localPlugTip, plug.lossyScale);
+
+        AnimatePlug(target, targetRot, 0.25f, () =>
         {
-            if (cable == null || cableAnchor == null || plug == null)
-            {
-                return;
-            }
+            SoundManager.PlaySound(sounds.plugInsert);
+            SoundManager.PlaySound(calls[callIndex].IsCorrectLine(sockets[socketIndex].lineId) ? sounds.correctConnection : sounds.wrongConnection);
+            PlayDialogue(calls[callIndex].ReplyFor(sockets[socketIndex].lineId), Phase.Reply);
+        });
+    }
 
-            Vector3 end = plug.TransformPoint(Vector3.up * 0.3f);
-            for (int i = 0; i < cable.positionCount; i++)
-            {
-                float t = (float)i / (cable.positionCount - 1);
-                Vector3 pt = Vector3.Lerp(cableAnchor.position, end, t);
-                pt.y = Mathf.Max(0.99f, pt.y - Mathf.Sin(t * Mathf.PI) * 0.3f);
-                pt.z -= Mathf.Sin(t * Mathf.PI) * 0.25f;
-                cable.SetPosition(i, pt);
-            }
+    private void ReturnHome(float duration = 0.35f, TweenCallback onComplete = null)
+    {
+        if (plug == null || grabCollider == null)
+        {
+            return;
         }
+        bool moved = (plug.position - homePos).sqrMagnitude > 0.0001f || Quaternion.Angle(plug.rotation, homeRot) > 0.1f;
+        HighlightSocket(-1);
+        grabCollider.enabled = false;
+
+        AnimatePlug(homePos, homeRot, duration, () =>
+        {
+            grabCollider.enabled = true;
+            if (moved)
+            {
+                SoundManager.PlaySound(sounds.plugPutDown);
+            }
+            onComplete?.Invoke();
+        });
+    }
+
+    private void CancelDrag()
+    {
+        SoundManager.PlaySound(sounds.plugCancel);
+        phase = Phase.Transition;
+        ReturnHome(0.35f, () =>
+        {
+            phase = Phase.Routing;
+        });
+    }
+
+    private void AnimatePlug(Vector3 targetPos, Quaternion targetRot, float duration, TweenCallback onComplete = null)
+    {
+        plug.DOKill();
+        DOTween.Sequence()
+            .SetTarget(plug)
+            .Join(plug.DOMove(targetPos, duration).SetEase(Ease.OutQuad))
+            .Join(plug.DORotateQuaternion(targetRot, duration).SetEase(Ease.OutQuad))
+            .OnComplete(onComplete);
+    }
+
+    private void HighlightSocket(int index)
+    {
+        if (hoveredSocket == index)
+        {
+            return;
+        }
+        hoveredSocket = index;
+        if (dragging && index >= 0)
+        {
+            SoundManager.PlaySound(sounds.socketHover);
+        }
+
+        for (int i = 0; i < socketRenderers.Length; i++)
+        {
+            if (socketRenderers[i] == null)
+            {
+                continue;
+            }
+            bool isHovered = i == index;
+            highlight.SetColor("_BaseColor", isHovered ? hoverColor : socketColors[i]);
+            highlight.SetColor("_EmissionColor", isHovered ? hoverColor * 0.8f : Color.black);
+            socketRenderers[i].SetPropertyBlock(highlight);
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (cable == null || cableAnchor == null || plug == null)
+        {
+            return;
+        }
+
+        Vector3 end = plug.TransformPoint(Vector3.up * 0.3f);
+        int count = cable.positionCount;
+        for (int i = 0; i < count; i++)
+        {
+            float t = (float)i / (count - 1);
+            float sag = Mathf.Sin(t * Mathf.PI);
+            Vector3 pt = Vector3.Lerp(cableAnchor.position, end, t);
+            pt.y = Mathf.Max(0.99f, pt.y - sag * 0.3f);
+            pt.z -= sag * 0.25f;
+            cable.SetPosition(i, pt);
+        }
+    }
+
+    private void StopLoopSounds()
+    {
+        SoundManager.StopSound(sounds.plugDrag);
+        SoundManager.StopSound(sounds.dialogueTyping);
+    }
+
+    private void OnDestroy()
+    {
+        DOTween.Kill(this);
+        plug?.DOKill();
+        dialogueText?.DOKill();
+        StopLoopSounds();
     }
 }

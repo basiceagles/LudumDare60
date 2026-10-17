@@ -27,9 +27,20 @@ namespace SmallHedge.SoundManager
 
         public static void PlaySound(SoundType sound, AudioSource source = null, float volume = 1)
         {
-            SoundList soundList = instance.SO.sounds[(int)sound];
+            if (!TryGetSound(sound, out SoundList soundList))
+            {
+                return;
+            }
             AudioClip[] clips = soundList.sounds;
+            if (clips == null || clips.Length == 0)
+            {
+                return;
+            }
             AudioClip randomClip = clips[UnityEngine.Random.Range(0, clips.Length)];
+            if (randomClip == null)
+            {
+                return;
+            }
 
             if (source)
             {
@@ -72,7 +83,10 @@ namespace SmallHedge.SoundManager
                 return;
             }
 
-            SoundList soundList = instance.SO.sounds[(int)sound];
+            if (!TryGetSound(sound, out SoundList soundList) || soundList.sounds == null)
+            {
+                return;
+            }
             AudioClip[] clips = soundList.sounds;
 
             foreach (AudioClip clip in clips)
@@ -98,10 +112,43 @@ namespace SmallHedge.SoundManager
         {
             if (loopSources.TryGetValue(sound, out AudioSource source))
             {
-                source.Stop();
-                Destroy(source);
+                if (source != null)
+                {
+                    source.Stop();
+                    Destroy(source);
+                }
                 loopSources.Remove(sound);
             }
+        }
+
+        private static bool TryGetSound(SoundType sound, out SoundList soundList)
+        {
+            soundList = default;
+            int index = (int)sound;
+            if (instance == null || instance.SO == null || instance.SO.sounds == null || index < 0 || index >= instance.SO.sounds.Length)
+            {
+                return false;
+            }
+            soundList = instance.SO.sounds[index];
+            return true;
+        }
+
+        private void OnDestroy()
+        {
+            if (instance != this)
+            {
+                return;
+            }
+            foreach (AudioSource source in loopSources.Values)
+            {
+                if (source != null)
+                {
+                    source.Stop();
+                    Destroy(source);
+                }
+            }
+            loopSources.Clear();
+            instance = null;
         }
     }
 

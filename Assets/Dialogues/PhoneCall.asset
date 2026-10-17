@@ -13,16 +13,31 @@ MonoBehaviour:
   m_Name: PhoneCall
   m_EditorClassIdentifier: 
   title: test
-  correctDestination: 0
+  characterSprite: {fileID: 21300000, guid: 35bb8064d31e0904fa906c552386ac30, type: 3}
+  correctLineId: police
   conversation:
   - speaker: 1test1
     text: test1
   - speaker: 1test1
     text: test2
+  policeLineId: police
   policeReply:
   - speaker: test3
     text: 4444
-  psychiatristReply: []
+  psychiatristLineId: psychiatrist
+  psychiatristReply:
+  - speaker: "\u043F\u0438\u0437\u0434\u0435\u0446"
+    text: "\u044F \u0434\u0430\u0443\u043D"
+  ambulanceLineId: ambulance
   ambulanceReply: []
+  fireLineId: fire
   fireReply: []
+  informationLineId: information
   informationReply: []
+  line6Id: line6
+  line6Reply: []
+  line7Id: line7
+  line7Reply: []
+  line8Id: line8
+  line8Reply: []
+  additionalReplies: []

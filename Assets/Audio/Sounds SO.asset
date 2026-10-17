@@ -177,3 +177,95 @@ MonoBehaviour:
     mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
     sounds:
     - {fileID: 8300000, guid: 376c9d2ede3b7584a8aa4264047478e4, type: 3}
+  - name: PLUG_PICKUP
+    volume: 1
+    loop: 0
+    bypassReverbZones: 1
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds: []
+  - name: PLUG_DRAG
+    volume: 1
+    loop: 1
+    bypassReverbZones: 1
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds: []
+  - name: PLUG_INSERT
+    volume: 1
+    loop: 0
+    bypassReverbZones: 1
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds: []
+  - name: PLUG_PUT_DOWN
+    volume: 1
+    loop: 0
+    bypassReverbZones: 1
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds: []
+  - name: PLUG_CANCEL
+    volume: 1
+    loop: 0
+    bypassReverbZones: 1
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds: []
+  - name: SOCKET_HOVER
+    volume: 1
+    loop: 0
+    bypassReverbZones: 1
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds: []
+  - name: CALL_RING
+    volume: 1
+    loop: 1
+    bypassReverbZones: 1
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: 21745f95f01e5774b82483e4983465da, type: 3}
+  - name: CALL_ANSWER
+    volume: 1
+    loop: 0
+    bypassReverbZones: 1
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds:
+    - {fileID: 8300000, guid: e563d7df89a606444bdb5030ee9acdcd, type: 3}
+  - name: CALL_HANG_UP
+    volume: 1
+    loop: 0
+    bypassReverbZones: 1
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds: []
+  - name: CONNECTION_CORRECT
+    volume: 1
+    loop: 0
+    bypassReverbZones: 1
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds: []
+  - name: CONNECTION_WRONG
+    volume: 1
+    loop: 0
+    bypassReverbZones: 1
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds: []
+  - name: DIALOGUE_NEXT
+    volume: 1
+    loop: 0
+    bypassReverbZones: 1
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds: []
+  - name: DIALOGUE_TYPING
+    volume: 1
+    loop: 1
+    bypassReverbZones: 1
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds: []
+  - name: DIALOGUE_FINISHED
+    volume: 1
+    loop: 0
+    bypassReverbZones: 1
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds: []
+  - name: SHIFT_FINISHED
+    volume: 1
+    loop: 0
+    bypassReverbZones: 1
+    mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
+    sounds: []
