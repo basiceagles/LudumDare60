@@ -40,6 +40,9 @@ public sealed class DecalAtlasPlacer : MonoBehaviour
     private static readonly int AtlasRectID =
         Shader.PropertyToID("_AtlasRect");
 
+    private static readonly int DecalUVScaleID =
+        Shader.PropertyToID("_DecalUVScale");
+
     private static readonly int TintColorID =
         Shader.PropertyToID("_TintColor");
 
@@ -106,6 +109,30 @@ public sealed class DecalAtlasPlacer : MonoBehaviour
 
 
     // ========================================================================
+    // SPRITE SIZE
+    // ========================================================================
+
+    [Header("Sprite Size")]
+
+    [Tooltip(
+        "When enabled, the sprite is scaled INSIDE the mesh footprint " +
+        "(the mesh keeps its size). Its world size is derived from the " +
+        "sprite's pixel dimensions and Pixels Per Unit."
+    )]
+    [SerializeField]
+    private bool applySpriteSize = true;
+
+
+    [Tooltip(
+        "How many sprite pixels equal one world unit. Smaller values make " +
+        "the sprite larger inside the mesh."
+    )]
+    [Min(0.0001f)]
+    [SerializeField]
+    private float pixelsPerUnit = 100f;
+
+
+    // ========================================================================
     // UPDATE
     // ========================================================================
 
@@ -130,6 +157,8 @@ public sealed class DecalAtlasPlacer : MonoBehaviour
     private Texture appliedTexture;
 
     private Vector4 appliedRect;
+
+    private Vector4 appliedUVScale;
 
     private Color appliedTint;
 
@@ -236,6 +265,16 @@ public sealed class DecalAtlasPlacer : MonoBehaviour
             : GridRect();
 
 
+        // ----------------------------------------------------------------
+        // Scale the sprite inside the mesh footprint.
+        // ----------------------------------------------------------------
+
+        Vector4 decalUVScale =
+            ComputeDecalUVScale(
+                packedSprite
+            );
+
+
         // Skip identical writes (also avoids editor churn while the
         // shared material is being imported).
 
@@ -243,6 +282,7 @@ public sealed class DecalAtlasPlacer : MonoBehaviour
             applied
             && appliedTexture == atlasTexture
             && appliedRect == atlasRect
+            && appliedUVScale == decalUVScale
             && appliedTint == tint
         )
         {
@@ -277,6 +317,12 @@ public sealed class DecalAtlasPlacer : MonoBehaviour
         );
 
 
+        propertyBlock.SetVector(
+            DecalUVScaleID,
+            decalUVScale
+        );
+
+
         propertyBlock.SetColor(
             TintColorID,
             tint
@@ -292,9 +338,94 @@ public sealed class DecalAtlasPlacer : MonoBehaviour
 
         appliedRect = atlasRect;
 
+        appliedUVScale = decalUVScale;
+
         appliedTint = tint;
 
         applied = true;
+    }
+
+
+    // ========================================================================
+    // SPRITE SIZE
+    // ========================================================================
+    //
+    // Converts the sprite's pixel dimensions into a world-space size using
+    // Pixels Per Unit, then turns it into a UV scale so the sprite occupies
+    // that world size INSIDE the decal mesh. The mesh itself is never
+    // resized.
+    //
+    // The shader maps the mesh's world-space XZ footprint (a unit cube
+    // scaled by lossyScale) onto the 0..1 sprite UV, so the UV scale is
+    // simply meshWorldSize / desiredWorldSize.
+    //
+    // ========================================================================
+
+    private Vector4 ComputeDecalUVScale(
+        Sprite packedSprite
+    )
+    {
+        if (
+            !applySpriteSize
+            || packedSprite == null
+        )
+        {
+            return new Vector4(
+                1f,
+                1f,
+                0f,
+                0f
+            );
+        }
+
+
+        // Desired world size of the sprite, from its pixel size and the
+        // chosen Pixels Per Unit.
+
+        Vector2 desiredWorld =
+            new Vector2(
+                packedSprite.bounds.size.x,
+                packedSprite.bounds.size.y
+            )
+            * (
+                packedSprite.pixelsPerUnit
+                / Mathf.Max(
+                    pixelsPerUnit,
+                    0.0001f
+                )
+            );
+
+
+        // World footprint of the decal mesh. The shader assumes a unit
+        // cube in object space, so the footprint is the transform's
+        // world scale.
+
+        Vector3 lossyScale =
+            transform.lossyScale;
+
+        Vector2 meshWorld =
+            new Vector2(
+                Mathf.Abs(lossyScale.x),
+                Mathf.Abs(lossyScale.z)
+            );
+
+
+        // UV scale that maps the sprite world size onto the mesh.
+
+        return new Vector4(
+            meshWorld.x
+            / Mathf.Max(
+                desiredWorld.x,
+                0.0001f
+            ),
+            meshWorld.y
+            / Mathf.Max(
+                desiredWorld.y,
+                0.0001f
+            ),
+            0f,
+            0f
+        );
     }
 
 

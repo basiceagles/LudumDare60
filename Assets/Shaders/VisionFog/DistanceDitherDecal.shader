@@ -24,6 +24,16 @@ Shader "Distance Dither Fog/Decal Projection"
         ) = (0, 0, 1, 1)
 
 
+        // Scales the sprite INSIDE the mesh footprint without changing
+        // the mesh. Larger values shrink the sprite, smaller values
+        // enlarge (and crop) it. Set per decal via MaterialPropertyBlock.
+        [HideInInspector]
+        _DecalUVScale(
+            "Decal UV Scale (x, y, 0, 0)",
+            Vector
+        ) = (1, 1, 0, 0)
+
+
         // ============================================================
         // PROJECTION
         //
@@ -33,12 +43,17 @@ Shader "Distance Dither Fog/Decal Projection"
         // The sprite is projected straight down the cube's local -Y
         // axis onto whatever geometry is inside the volume.
         //
-        // The cube's XZ footprint maps to the sprite UV (0..1). Scale
-        // the cube in XZ to set the decal size.
+        // The cube's XZ footprint defines the projection volume. The
+        // sprite is scaled INSIDE that footprint by _DecalUVScale (set
+        // per decal from the sprite's size), so the mesh size is what
+        // controls the volume and _DecalUVScale controls the sprite.
         //
         // _ProjectionFade fades the sprite out the deeper the projected
         // point is below the top of the volume, so the decal does not
         // bleed through thin geometry and appear on the far side.
+        //
+        // The fade is applied as a hard cutout, not as alpha transparency
+        // or dithering, so the decal never looks semi-transparent.
         //
         // ATLAS: the Sprite Atlas texture can hold many sprites. Each
         // decal shares the SAME material and only changes _AtlasRect
@@ -186,6 +201,8 @@ Shader "Distance Dither Fog/Decal Projection"
                 float4 _TintColor;
 
                 float4 _AtlasRect;
+
+                float4 _DecalUVScale;
 
                 float _ProjectionFade;
 
@@ -380,12 +397,29 @@ Shader "Distance Dither Fog/Decal Projection"
                 // ----------------------------------------------------
                 // Sample the sprite inside the atlas.
                 //
-                // decalXY (0..1 across the cube footprint) is remapped
-                // into the tile defined by _AtlasRect.
+                // decalXY (0..1 across the cube footprint) is first scaled
+                // around the centre by _DecalUVScale, so the sprite can be
+                // resized inside the mesh without changing the mesh, then
+                // remapped into the tile defined by _AtlasRect.
                 // ----------------------------------------------------
 
+                float2 spriteUV =
+                    (decalXY - 0.5)
+                    * _DecalUVScale.xy
+                    + 0.5;
+
+
+                if (
+                    any(spriteUV < 0.0)
+                    || any(spriteUV > 1.0)
+                )
+                {
+                    discard;
+                }
+
+
                 float2 decalUV =
-                    decalXY * _AtlasRect.zw
+                    spriteUV * _AtlasRect.zw
                     + _AtlasRect.xy;
 
 
@@ -416,18 +450,26 @@ Shader "Distance Dither Fog/Decal Projection"
 
                 // ----------------------------------------------------
                 // Composite the sprite over the surface.
+                //
+                // The projection fade is applied as a hard cutout, so
+                // every visible pixel stays fully opaque and there is no
+                // dither pattern or semi-transparent look.
                 // ----------------------------------------------------
+
+                clip(
+                    projectionFade
+                    - 0.5
+                );
+
 
                 half3 decalColor =
                     sprite.rgb
-                    * _TintColor.rgb
-                    * projectionFade;
+                    * _TintColor.rgb;
 
 
                 half decalAlpha =
                     sprite.a
-                    * _TintColor.a
-                    * projectionFade;
+                    * _TintColor.a;
 
 
                 return half4(
