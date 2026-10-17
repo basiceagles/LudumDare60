@@ -58,30 +58,32 @@ namespace LudumDare60.Switchboard
         {
             SetVisible(false);
 
-            homePos = plug.position;
-            homeRot = plug.rotation;
-            dragPlane = new Plane(Vector3.up, sockets[0].bounds.center);
-            highlight = new MaterialPropertyBlock();
-
-            socketRenderers = new Renderer[sockets.Length];
-            socketColors = new Color[sockets.Length];
-            for (int i = 0; i < sockets.Length; i++)
+            if (plug != null)
             {
-                socketRenderers[i] = sockets[i].GetComponent<Renderer>();
-                if (socketRenderers[i] != null)
+                homePos = plug.position;
+                homeRot = plug.rotation;
+            }
+
+            if (sockets.Length > 0 && sockets[0] != null)
+            {
+                dragPlane = new Plane(Vector3.up, sockets[0].bounds.center);
+                highlight = new MaterialPropertyBlock();
+
+                socketRenderers = new Renderer[sockets.Length];
+                socketColors = new Color[sockets.Length];
+                for (int i = 0; i < sockets.Length; i++)
                 {
-                    socketColors[i] = socketRenderers[i].sharedMaterial.GetColor("_BaseColor");
+                    socketRenderers[i] = sockets[i].GetComponent<Renderer>();
+                    if (socketRenderers[i] != null)
+                    {
+                        socketColors[i] = socketRenderers[i].sharedMaterial.GetColor("_BaseColor");
+                    }
                 }
             }
 
             if (cable != null)
             {
                 cable.positionCount = 24;
-            }
-
-            if (answerCallButton == null)
-            {
-                return;
             }
 
             RestartShift();
@@ -137,8 +139,10 @@ namespace LudumDare60.Switchboard
 
         public void RestartShift()
         {
-            DOTween.Kill(plug);
-            
+            if (plug != null)
+            {
+                DOTween.Kill(plug);
+            }
             typingTween?.Kill();
             dragging = false;
             isTyping = false;
@@ -237,6 +241,11 @@ namespace LudumDare60.Switchboard
 
         private void DragPlug()
         {
+            if (plug == null)
+            {
+                return;
+            }
+
             Ray ray = viewCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
 
             if (!dragging && Mouse.current.leftButton.wasPressedThisFrame && grabCollider.Raycast(ray, out _, 100))
@@ -295,29 +304,47 @@ namespace LudumDare60.Switchboard
 
             Vector3 target = sockets[socketIndex].bounds.center + Vector3.up * tipOffset;
 
-            plugTween?.Kill();
-            plugTween = DOTween.Sequence()
-                .Join(plug.DOMove(target, 0.25f).SetEase(Ease.OutBack))
-                .Join(plug.DORotateQuaternion(Quaternion.identity, 0.25f).SetEase(Ease.OutQuad))
-                .OnComplete(() =>
-                {
-                    PhoneLine[] reply = calls[callIndex].ReplyFor((ServiceDestination)socketIndex);
-                    PlayDialogue(reply, Phase.Reply);
-                });
+            if (plug != null)
+            {
+                plugTween?.Kill();
+                plugTween = DOTween.Sequence()
+                    .Join(plug.DOMove(target, 0.25f).SetEase(Ease.OutBack))
+                    .Join(plug.DORotateQuaternion(Quaternion.identity, 0.25f).SetEase(Ease.OutQuad))
+                    .OnComplete(() =>
+                    {
+                        PhoneLine[] reply = calls[callIndex].ReplyFor((ServiceDestination)socketIndex);
+                        PlayDialogue(reply, Phase.Reply);
+                    });
+            }
+            else
+            {
+                PhoneLine[] reply = calls[callIndex].ReplyFor((ServiceDestination)socketIndex);
+                PlayDialogue(reply, Phase.Reply);
+            }
         }
 
         private void ReturnHome(float duration = 0.35f)
         {
             HighlightSocket(-1);
-            grabCollider.enabled = false;
-            plugTween?.Kill();
-            plugTween = DOTween.Sequence()
-                .Join(plug.DOMove(homePos, duration).SetEase(Ease.OutQuad))
-                .Join(plug.DORotateQuaternion(homeRot, duration).SetEase(Ease.OutQuad))
-                .OnComplete(() =>
-                {
-                    grabCollider.enabled = true;
-                });
+            if (grabCollider != null)
+            {
+                grabCollider.enabled = false;
+            }
+
+            if (plug != null)
+            {
+                plugTween?.Kill();
+                plugTween = DOTween.Sequence()
+                    .Join(plug.DOMove(homePos, duration).SetEase(Ease.OutQuad))
+                    .Join(plug.DORotateQuaternion(homeRot, duration).SetEase(Ease.OutQuad))
+                    .OnComplete(() =>
+                    {
+                        if (grabCollider != null)
+                        {
+                            grabCollider.enabled = true;
+                        }
+                    });
+            }
         }
 
         private void CancelDrag()
@@ -352,7 +379,7 @@ namespace LudumDare60.Switchboard
 
         private void LateUpdate()
         {
-            if (cable == null || cableAnchor == null)
+            if (cable == null || cableAnchor == null || plug == null)
             {
                 return;
             }
