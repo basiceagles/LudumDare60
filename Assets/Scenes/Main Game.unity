@@ -20,7 +20,7 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.6037736, g: 0.43574226, b: 0.43574226, a: 1}
+  m_AmbientSkyColor: {r: 0.4245283, g: 0.23314087, b: 0.09011215, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
@@ -10749,7 +10749,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1620a71ff971cf24fa7799f8db415271, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1

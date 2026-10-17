@@ -16,9 +16,9 @@ MonoBehaviour:
   correctDestination: 0
   conversation:
   - speaker: 1test1
-    text: test1
+    text: test122
   - speaker: 1test1
-    text: test2
+    text: test222
   policeReply:
   - speaker: test3
     text: 4444
