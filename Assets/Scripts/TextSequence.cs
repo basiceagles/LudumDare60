@@ -14,12 +14,26 @@ public class TextSequence : MonoBehaviour
     [SerializeField] private LayerMask interactLayer;
     [SerializeField] private float rayDistance = 5f;
 
+    [Header("Incoming Call")]
+    [SerializeField] private SwitchboardGame switchboard;
+    [Tooltip(
+        "Seconds between the click on the interactable object and the first " +
+        "call arriving. Negative keeps the receiver's own delay."
+    )]
+    [SerializeField] private float callDelay = 1f;
+
     private bool waitingForSecondClick;
 
     private void Start()
     {
         firstText.gameObject.SetActive(true);
         secondText.gameObject.SetActive(false);
+
+        if (playerCamera == null)
+            playerCamera = Camera.main;
+
+        if (switchboard == null)
+            switchboard = FindFirstObjectByType<SwitchboardGame>();
     }
 
     private void Update()
@@ -41,16 +55,29 @@ public class TextSequence : MonoBehaviour
         else if (waitingForSecondClick &&
                  Mouse.current.leftButton.wasPressedThisFrame)
         {
-            if (Physics.Raycast(
-                playerCamera.ScreenPointToRay(
-                    Mouse.current.position.ReadValue()),
-                out RaycastHit hit,
-                rayDistance,
-                interactLayer))
+            if (RaycastInteractable())
             {
                 secondText.gameObject.SetActive(false);
+
+                // Arm the shift so the opening call rings a second later.
+                if (switchboard != null)
+                    switchboard.StartShift(callDelay);
+
                 enabled = false;
             }
         }
+    }
+
+    private bool RaycastInteractable()
+    {
+        if (playerCamera == null || Mouse.current == null)
+            return false;
+
+        return Physics.Raycast(
+            playerCamera.ScreenPointToRay(
+                Mouse.current.position.ReadValue()),
+            out _,
+            rayDistance,
+            interactLayer);
     }
 }
