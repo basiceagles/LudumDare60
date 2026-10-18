@@ -36,6 +36,7 @@ public class SwitchboardGame : MonoBehaviour
     public SwitchboardSounds sounds = new SwitchboardSounds();
     public PhoneCall[] calls = new PhoneCall[0];
     public GameObject dialoguePanel;
+    [Tooltip("Image существующего NPC_Icon. Спрайт из звонка или реплики меняет его Source Image.")]
     public Image characterIcon;
     public TMP_Text speakerText;
     public TMP_Text dialogueText;
@@ -95,6 +96,10 @@ public class SwitchboardGame : MonoBehaviour
     private Quaternion homeRot;
     private Vector3 localPlugTip;
     private Plane dragPlane;
+    private Vector3 dragCenterOffset;
+    private Vector3 dragHalfExtents;
+    private BoxCollider dragProbe;
+    private const float DragSurfaceGap = 0.005f;
     private Renderer[] socketRenderers;
     private Color[] socketColors;
     private MaterialPropertyBlock highlight;
@@ -442,13 +447,19 @@ public class SwitchboardGame : MonoBehaviour
 
     private void ShowCharacter(Sprite sprite)
     {
+        if (characterIcon == null && dialoguePanel != null)
+        {
+            Transform icon = dialoguePanel.transform.Find("NPC_Icon");
+            if (icon != null)
+            {
+                characterIcon = icon.GetComponent<Image>();
+            }
+        }
         if (characterIcon == null)
         {
             return;
         }
 
-        characterIcon.raycastTarget = false;
-        characterIcon.preserveAspect = true;
         characterIcon.sprite = sprite;
         characterIcon.enabled = sprite != null;
     }
@@ -510,6 +521,8 @@ public class SwitchboardGame : MonoBehaviour
         if (!dragging && Mouse.current.leftButton.wasPressedThisFrame && grabCollider.Raycast(ray, out _, 100))
         {
             dragging = true;
+            dragPlane = new Plane(-viewCamera.transform.forward, plug.position);
+            CacheDragBounds();
             SoundManager.PlaySound(sounds.plugPickup);
             SoundManager.PlaySound(sounds.plugDrag);
             grabCollider.enabled = false;
@@ -524,8 +537,9 @@ public class SwitchboardGame : MonoBehaviour
         if (dragPlane.Raycast(ray, out float dist))
         {
             plug.DOKill();
-            plug.DOMove(ray.GetPoint(dist), 0.05f);
-            plug.DORotateQuaternion(homeRot, 0.05f);
+            float follow = 1f - Mathf.Exp(-35f * Time.deltaTime);
+            plug.position = GetSafeDragPosition(ray, dist, follow);
+            plug.rotation = homeRot;
         }
 
         int hovered = GetHoveredSocket(ray, out RaycastHit hit);
@@ -544,6 +558,171 @@ public class SwitchboardGame : MonoBehaviour
                 CancelDrag();
             }
         }
+    }
+
+    private void CacheDragBounds()
+    {
+        Bounds bounds = grabCollider.bounds;
+        foreach (Renderer renderer in plug.GetComponentsInChildren<Renderer>())
+        {
+            if (renderer.enabled && (renderer is MeshRenderer || renderer is SkinnedMeshRenderer))
+            {
+                bounds.Encapsulate(renderer.bounds);
+            }
+        }
+        dragCenterOffset = bounds.center - plug.position;
+        dragHalfExtents = Vector3.Max(bounds.extents, Vector3.one * 0.001f);
+        PrepareDragProbe();
+    }
+
+    private Vector3 GetSafeDragPosition(Ray ray, float distance, float follow = 1f)
+    {
+        // ComputePenetration needs an enabled collider in this Unity version.
+        // Enable this trigger only during the query, never during simulation.
+        dragProbe.enabled = true;
+        try
+        {
+            return SolveDragPosition(ray, distance, follow);
+        }
+        finally
+        {
+            dragProbe.enabled = false;
+        }
+    }
+
+    private Vector3 SolveDragPosition(Ray ray, float distance, float follow)
+    {
+        float clearDistance = GetClearDragDistance(ray.origin + dragCenterOffset, ray.direction, distance);
+        Vector3 target = Vector3.Lerp(plug.position, ray.GetPoint(clearDistance), follow) + dragCenterOffset;
+        Vector3 center = ResolveDragOverlaps(plug.position + dragCenterOffset);
+        Vector3 remaining = target - center;
+        Vector3 firstNormal = Vector3.zero;
+        Vector3 secondNormal = Vector3.zero;
+
+        // Sweep each part of the slide. A tween straight to the final position
+        // would cut through a corner even when both end points were clear.
+        for (int step = 0; step < 6 && remaining.sqrMagnitude > 0.000001f; step++)
+        {
+            float length = remaining.magnitude;
+            Vector3 direction = remaining / length;
+            if (!TryGetDragHit(center, direction, length, out RaycastHit hit))
+            {
+                center += remaining;
+                break;
+            }
+
+            float travel = Mathf.Clamp(hit.distance - DragSurfaceGap, 0f, length);
+            center += direction * travel;
+            remaining -= direction * travel;
+            remaining = Vector3.ProjectOnPlane(remaining, hit.normal);
+
+            if (firstNormal == Vector3.zero)
+            {
+                firstNormal = hit.normal;
+            }
+            else if (Mathf.Abs(Vector3.Dot(firstNormal, hit.normal)) < 0.99f)
+            {
+                if (secondNormal == Vector3.zero)
+                {
+                    secondNormal = hit.normal;
+                }
+                Vector3 edge = Vector3.Cross(firstNormal, secondNormal);
+                remaining = Vector3.Project(remaining, edge);
+                if (Vector3.Dot(remaining, hit.normal) < -0.00001f)
+                {
+                    remaining = Vector3.zero;
+                }
+            }
+        }
+
+        return ResolveDragOverlaps(center) - dragCenterOffset;
+    }
+
+    private void PrepareDragProbe()
+    {
+        if (dragProbe == null)
+        {
+            // Reusable query shape; kept out of the physics simulation.
+            dragProbe = gameObject.AddComponent<BoxCollider>();
+            dragProbe.enabled = false;
+            dragProbe.isTrigger = true;
+            dragProbe.hideFlags = HideFlags.HideAndDontSave;
+        }
+        Vector3 size = (dragHalfExtents + Vector3.one * DragSurfaceGap) * 2f;
+        Vector3 scale = transform.lossyScale;
+        dragProbe.center = Vector3.zero;
+        dragProbe.size = new Vector3(
+            size.x / Mathf.Max(Mathf.Abs(scale.x), 0.0001f),
+            size.y / Mathf.Max(Mathf.Abs(scale.y), 0.0001f),
+            size.z / Mathf.Max(Mathf.Abs(scale.z), 0.0001f));
+    }
+
+    private Vector3 ResolveDragOverlaps(Vector3 center)
+    {
+        for (int step = 0; step < 8; step++)
+        {
+            bool corrected = false;
+            foreach (Collider obstacle in Physics.OverlapBox(center, dragHalfExtents + Vector3.one * DragSurfaceGap,
+                         Quaternion.identity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+            {
+                if (obstacle == dragProbe || obstacle.transform.IsChildOf(plug))
+                {
+                    continue;
+                }
+                if (Physics.ComputePenetration(dragProbe, center, Quaternion.identity,
+                        obstacle, obstacle.transform.position, obstacle.transform.rotation,
+                        out Vector3 normal, out float depth) && depth > 0.00001f)
+                {
+                    center += normal * (depth + 0.0001f);
+                    corrected = true;
+                }
+            }
+            if (!corrected)
+            {
+                break;
+            }
+        }
+        return center;
+    }
+
+    private float GetClearDragDistance(Vector3 center, Vector3 direction, float distance)
+    {
+        return TryGetDragHit(center, direction, distance, out RaycastHit hit)
+            ? Mathf.Clamp(hit.distance - DragSurfaceGap, 0f, distance)
+            : distance;
+    }
+
+    private bool TryGetDragHit(Vector3 center, Vector3 direction, float distance, out RaycastHit nearest)
+    {
+        nearest = default;
+        bool found = false;
+        float closest = distance + DragSurfaceGap;
+        foreach (RaycastHit hit in Physics.BoxCastAll(center, dragHalfExtents, direction,
+                     Quaternion.identity, closest, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+        {
+            Collider obstacle = hit.collider;
+            if (obstacle == dragProbe || obstacle.transform.IsChildOf(plug))
+            {
+                continue;
+            }
+            RaycastHit contact = hit;
+            // An overlapping BoxCast reports -direction as its normal. Use
+            // the actual separating normal so moving away cannot be blocked.
+            if (hit.distance <= 0.00001f && Physics.ComputePenetration(dragProbe, center, Quaternion.identity,
+                    obstacle, obstacle.transform.position, obstacle.transform.rotation,
+                    out Vector3 normal, out _))
+            {
+                contact.normal = normal;
+            }
+            if (Vector3.Dot(direction, contact.normal) >= -0.0001f || contact.distance > closest)
+            {
+                continue;
+            }
+            nearest = contact;
+            closest = contact.distance;
+            found = true;
+        }
+        return found;
     }
 
     private int GetHoveredSocket(Ray ray, out RaycastHit nearestHit)
@@ -716,5 +895,9 @@ public class SwitchboardGame : MonoBehaviour
         plug?.DOKill();
         dialogueText?.DOKill();
         StopLoopSounds();
+        if (dragProbe != null)
+        {
+            Destroy(dragProbe);
+        }
     }
 }
