@@ -23,6 +23,14 @@ public class PhoneCall : ScriptableObject
     public Sprite characterSprite;
     public string correctLineId;
     public PhoneLine[] conversation = new PhoneLine[0];
+
+    [Header("Ending")]
+    [Tooltip(
+        "Ending asset this call feeds (for example Ending1). Plugging the " +
+        "correct connector forces its good ending, any other connector " +
+        "forces its bad ending."
+    )]
+    public DialogueSO ending;
     public string policeLineId = "police";
     public PhoneLine[] policeReply = new PhoneLine[0];
     public string psychiatristLineId = "ambulance";
@@ -74,6 +82,18 @@ public class PhoneCall : ScriptableObject
     public bool IsCorrectLine(string lineId)
     {
         return Matches(lineId, correctLineId);
+    }
+
+    // Remembers how the call ended so the End scene can play the matching
+    // ending of the referenced ending asset.
+    public void ApplyEndingResult(bool correctLine)
+    {
+        if (ending == null)
+        {
+            return;
+        }
+
+        ending.ForceEnding(correctLine);
     }
 
     private static bool Matches(string first, string second)

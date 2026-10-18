@@ -3,6 +3,7 @@ using SmallHedge.SoundManager;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -45,6 +46,8 @@ public class SwitchboardGame : MonoBehaviour
     [Min(0f)] public float minSecondsBetweenCalls = 5f;
     [Tooltip("Longest random pause, in seconds, before the next call rings.")]
     [Min(0f)] public float maxSecondsBetweenCalls = 10f;
+    [Tooltip("Seconds the plug stays in the socket after a call ends before it returns home.")]
+    [Min(0f)] public float plugHoldSeconds = 1f;
 
     public Transform plug;
     public Camera viewCamera;
@@ -56,6 +59,20 @@ public class SwitchboardGame : MonoBehaviour
 
     public Transform cableAnchor;
     public LineRenderer cable;
+
+    [Header("Call Rules")]
+    [Tooltip("When on, the first call ends with its dialogue and skips the plug step, so the between-calls timer starts right away.")]
+    public bool firstCallSkipsPlug = true;
+
+    [Header("End Fade")]
+    [Tooltip("Full screen UI image used to fade the screen out when the last call ends. It is shown and its alpha is tweened from 0 to 1.")]
+    public Image fadeImage;
+    [Tooltip("Seconds the fade to black takes.")]
+    [Min(0f)] public float fadeDuration = 1.5f;
+    [Tooltip("Scene loaded once the fade is done. Leave empty to stay on the ending screen.")]
+    public string nextSceneName;
+    [Tooltip("Optional SceneLoader called once the fade is done. Takes priority over the scene name field above.")]
+    public SceneLoader nextSceneLoader;
 
     private enum Phase
     {
@@ -72,6 +89,7 @@ public class SwitchboardGame : MonoBehaviour
     private int callIndex = -1;
     private int lineIndex;
     private bool dragging;
+    private bool shiftEnding;
 
     private Vector3 homePos;
     private Quaternion homeRot;
@@ -196,7 +214,9 @@ public class SwitchboardGame : MonoBehaviour
                 break;
 
             case Phase.Finished:
-                if (calls.Length > 0)
+                // While the ending fade is running the shift must not restart
+                // under it, so clicks are ignored until the scene hands over.
+                if (!shiftEnding && calls.Length > 0)
                 {
                     RestartShift();
                 }
@@ -211,6 +231,8 @@ public class SwitchboardGame : MonoBehaviour
         dialogueText?.DOKill();
         dragging = false;
         callIndex = -1;
+        shiftEnding = false;
+        HideFade();
         NextCall();
     }
 
@@ -236,12 +258,23 @@ public class SwitchboardGame : MonoBehaviour
         {
             dialoguePanel.SetActive(false);
         }
-        ReturnHome();
+        // Keep the plug seated in the socket for a beat after the call ends
+        // instead of yanking it home the instant the dialogue finishes.
+        float plugHold = Mathf.Max(0f, plugHoldSeconds);
+        if (plugHold > 0f)
+        {
+            DOVirtual.DelayedCall(plugHold, () => ReturnHome(), false).SetLink(gameObject).SetTarget(this).SetId(this);
+        }
+        else
+        {
+            ReturnHome();
+        }
 
         if (++callIndex >= calls.Length)
         {
             phase = Phase.Finished;
             SoundManager.PlaySound(sounds.shiftFinished);
+            BeginEnding();
             return;
         }
 
@@ -268,6 +301,85 @@ public class SwitchboardGame : MonoBehaviour
         float max = Mathf.Max(min, maxSecondsBetweenCalls);
 
         return UnityEngine.Random.Range(min, max);
+    }
+
+    // The last call is over: fade the screen out and hand over to the
+    // configured scene. Nothing is armed when no fader and no scene are set,
+    // so the old "click to run the shift again" flow keeps working.
+    private void BeginEnding()
+    {
+        if (fadeImage == null && nextSceneLoader == null && string.IsNullOrWhiteSpace(nextSceneName))
+        {
+            return;
+        }
+
+        shiftEnding = true;
+
+        // Let the plug finish its hold first, so the screen only goes dark
+        // once the call is really over (the return animation overlaps the
+        // start of the fade).
+        float delay = Mathf.Max(0f, plugHoldSeconds);
+        if (delay > 0f)
+        {
+            DOVirtual.DelayedCall(delay, FadeOutToScene, false).SetLink(gameObject).SetTarget(this).SetId(this);
+        }
+        else
+        {
+            FadeOutToScene();
+        }
+    }
+
+    private void FadeOutToScene()
+    {
+        if (fadeImage == null)
+        {
+            LoadTargetScene();
+            return;
+        }
+
+        fadeImage.gameObject.SetActive(true);
+        fadeImage.raycastTarget = true;
+
+        Color color = fadeImage.color;
+        color.a = 0f;
+        fadeImage.color = color;
+
+        fadeImage.DOKill();
+        fadeImage.DOFade(1f, Mathf.Max(0f, fadeDuration))
+            .SetTarget(fadeImage)
+            .SetId(this)
+            .SetLink(gameObject)
+            .OnComplete(LoadTargetScene);
+    }
+
+    private void LoadTargetScene()
+    {
+        if (nextSceneLoader != null)
+        {
+            nextSceneLoader.LoadScene();
+            return;
+        }
+
+        if (!string.IsNullOrWhiteSpace(nextSceneName))
+        {
+            SceneManager.LoadScene(nextSceneName);
+        }
+    }
+
+    private void HideFade()
+    {
+        if (fadeImage == null)
+        {
+            return;
+        }
+
+        fadeImage.DOKill();
+
+        Color color = fadeImage.color;
+        color.a = 0f;
+        fadeImage.color = color;
+
+        fadeImage.gameObject.SetActive(false);
     }
 
     private void StartConversation()
@@ -367,13 +479,25 @@ public class SwitchboardGame : MonoBehaviour
         {
             SoundManager.PlaySound(sounds.dialogueFinished);
             dialoguePanel.SetActive(false);
-            phase = Phase.Routing;
+
+            // The opening call can be a plain conversation: when it skips the
+            // plug step the between-calls timer starts the moment it is over.
+            if (SkipPlugForCurrentCall)
+            {
+                NextCall();
+            }
+            else
+            {
+                phase = Phase.Routing;
+            }
         }
         else
         {
             NextCall();
         }
     }
+
+    private bool SkipPlugForCurrentCall => firstCallSkipsPlug && callIndex == 0;
 
     private void DragPlug()
     {
@@ -477,9 +601,20 @@ public class SwitchboardGame : MonoBehaviour
 
         AnimatePlug(target, targetRot, 0.25f, () =>
         {
+            // Grab the call and the chosen connector now, so a hang up during
+            // the insert animation cannot shift them under us.
+            PhoneCall call = calls[callIndex];
+            string lineId = sockets[socketIndex].lineId;
+            bool correct = call.IsCorrectLine(lineId);
+
             SoundManager.PlaySound(sounds.plugInsert);
-            SoundManager.PlaySound(calls[callIndex].IsCorrectLine(sockets[socketIndex].lineId) ? sounds.correctConnection : sounds.wrongConnection);
-            PlayDialogue(calls[callIndex].ReplyFor(sockets[socketIndex].lineId), Phase.Reply);
+            SoundManager.PlaySound(correct ? sounds.correctConnection : sounds.wrongConnection);
+
+            // The connector the player chose decides this call's ending:
+            // correct line = good ending, anything else = bad ending.
+            call.ApplyEndingResult(correct);
+
+            PlayDialogue(call.ReplyFor(lineId), Phase.Reply);
         });
     }
 

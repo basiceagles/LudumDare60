@@ -124,21 +124,42 @@ MonoBehaviour:
     shakeSpeed: 3
     shakeAmount: 3
   goodEnding:
-  - text: Test test test test
+  - text: Fortunately, a man standing near the cellphone immediately called 911.
     textSize: 32
-    typeSpeed: 3
+    typeSpeed: 5
     typingClip: {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}
-    typingVolume: 0
+    typingVolume: 1
     soundEveryCharacters: 1
     shakeLetters: 0
     shakeSpeed: 0
     shakeAmount: 0
-  - text: Test test test test2
+  - text: The fire trucks arrived just in time and successfully extinguished the
+      fire.
     textSize: 32
-    typeSpeed: 3
+    typeSpeed: 5
     typingClip: {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}
-    typingVolume: 0
+    typingVolume: 1
     soundEveryCharacters: 1
     shakeLetters: 0
     shakeSpeed: 0
     shakeAmount: 0
+  - text: According to the news, three people suffered burns, but nobody died.
+    textSize: 32
+    typeSpeed: 4
+    typingClip: {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  - text: Something truly terrible had almost happened...
+    textSize: 32
+    typeSpeed: 4
+    typingClip: {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  forceBadEnding: 1
+  forceGoodEnding: 0

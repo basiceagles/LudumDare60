@@ -70,12 +70,36 @@ public class DialoguePlayer : MonoBehaviour
         }
     }
 
-    // Uses the Inspector debug toggles.
-    // If both are enabled, Bad Ending takes priority.
+    // Uses the force flags stored on the ending assets first (the switchboard
+    // sets them from the plug the player used), then falls back to the
+    // Inspector debug toggles. If both sides say something, Bad Ending wins.
     public void PlayDialogue()
     {
-        bool goodEnding = forceGoodEnding && !forceBadEnding;
-        PlayDialogue(goodEnding);
+        PlayDialogue(ResolveGoodEnding());
+    }
+
+    private bool ResolveGoodEnding()
+    {
+        foreach (DialogueSO dialogueData in dialogues)
+        {
+            if (dialogueData == null)
+                continue;
+
+            if (dialogueData.forceBadEnding)
+                return false;
+
+            if (dialogueData.forceGoodEnding)
+                return true;
+        }
+
+        if (forceBadEnding)
+            return false;
+
+        if (forceGoodEnding)
+            return true;
+
+        // Nothing was forced: default to the bad ending.
+        return false;
     }
 
     // Call from another script to choose the ending.
@@ -135,8 +159,15 @@ public class DialoguePlayer : MonoBehaviour
                 }
             }
 
-            // Play the selected ending for this asset.
-            List<DialogueLine> ending = goodEnding
+            // Play the selected ending for this asset. An asset that was
+            // forced (by the switchboard, or by its own Inspector flag) picks
+            // its own version, otherwise the decision taken when playback
+            // started is used.
+            bool useGoodEnding = dialogueData.forceBadEnding
+                ? false
+                : dialogueData.forceGoodEnding || goodEnding;
+
+            List<DialogueLine> ending = useGoodEnding
                 ? dialogueData.goodEnding
                 : dialogueData.badEnding;
 
