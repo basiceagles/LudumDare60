@@ -25,19 +25,19 @@ public class PhoneCall : ScriptableObject
     public PhoneLine[] conversation = new PhoneLine[0];
     public string policeLineId = "police";
     public PhoneLine[] policeReply = new PhoneLine[0];
-    public string psychiatristLineId = "psychiatrist";
+    public string psychiatristLineId = "ambulance";
     public PhoneLine[] psychiatristReply = new PhoneLine[0];
-    public string ambulanceLineId = "ambulance";
+    public string ambulanceLineId = "psycho";
     public PhoneLine[] ambulanceReply = new PhoneLine[0];
     public string fireLineId = "fire";
     public PhoneLine[] fireReply = new PhoneLine[0];
-    public string informationLineId = "information";
+    public string informationLineId = "pizza";
     public PhoneLine[] informationReply = new PhoneLine[0];
-    public string line6Id = "line6";
+    public string line6Id = "service";
     public PhoneLine[] line6Reply = new PhoneLine[0];
-    public string line7Id = "line7";
+    public string line7Id = "graveyard";
     public PhoneLine[] line7Reply = new PhoneLine[0];
-    public string line8Id = "line8";
+    public string line8Id = "disconnect";
     public PhoneLine[] line8Reply = new PhoneLine[0];
     public LineReply[] additionalReplies = new LineReply[0];
 
