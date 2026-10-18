@@ -3,6 +3,7 @@ using SmallHedge.SoundManager;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class SwitchboardSocket
@@ -34,11 +35,16 @@ public class SwitchboardGame : MonoBehaviour
     public SwitchboardSounds sounds = new SwitchboardSounds();
     public PhoneCall[] calls = new PhoneCall[0];
     public GameObject dialoguePanel;
-    public Transform characterPosition;
-    public PhoneCharacterView characterPrefab;
+    public Image characterIcon;
     public TMP_Text speakerText;
     public TMP_Text dialogueText;
     [Min(1)] public float charactersPerSecond = 38;
+
+    [Header("Call Timing")]
+    [Tooltip("Shortest random pause, in seconds, before the next call rings.")]
+    [Min(0f)] public float minSecondsBetweenCalls = 5f;
+    [Tooltip("Longest random pause, in seconds, before the next call rings.")]
+    [Min(0f)] public float maxSecondsBetweenCalls = 10f;
 
     public Transform plug;
     public Camera viewCamera;
@@ -66,7 +72,6 @@ public class SwitchboardGame : MonoBehaviour
     private int callIndex = -1;
     private int lineIndex;
     private bool dragging;
-    private PhoneCharacterView characterView;
 
     private Vector3 homePos;
     private Quaternion homeRot;
@@ -240,12 +245,29 @@ public class SwitchboardGame : MonoBehaviour
             return;
         }
 
-        float delay = callIndex == 0 ? (receiver != null ? Mathf.Max(0f, receiver.firstCallDelay) : 0f) : 0.35f;
+        // The very first call keeps the receiver's own start-up delay. Every
+        // call after that waits a random pause, so inserting a plug no longer
+        // makes the next call ring the moment the current one ends.
+        float delay = callIndex == 0
+            ? (receiver != null ? Mathf.Max(0f, receiver.firstCallDelay) : 0f)
+            : RandomSecondsBetweenCalls();
+
         DOVirtual.DelayedCall(delay, () =>
         {
             phase = Phase.IncomingCall;
             receiver?.StartRinging();
-        }, false).SetLink(gameObject).SetId(this);
+        }, false).SetLink(gameObject).SetTarget(this).SetId(this);
+    }
+
+    // Random pause before the next call rings, kept between the two
+    // inspector values (a reversed range falls back to the minimum).
+    private float RandomSecondsBetweenCalls()
+    {
+        float min = Mathf.Max(0f, minSecondsBetweenCalls);
+
+        float max = Mathf.Max(min, maxSecondsBetweenCalls);
+
+        return UnityEngine.Random.Range(min, max);
     }
 
     private void StartConversation()
@@ -280,9 +302,17 @@ public class SwitchboardGame : MonoBehaviour
         speakerText.text = line.speaker;
         dialogueText.text = line.text;
         dialogueText.maxVisibleCharacters = 0;
-        dialogueText.ForceMeshUpdate();
 
-        dialoguePanel.SetActive(true);
+        // TextMeshPro only rebuilds its mesh while the object is active.
+        // ForceMeshUpdate() below would silently do nothing if the panel was
+        // still hidden, leaving textInfo.characterCount at the previous line's
+        // length and cutting the new line short, so show the panel first.
+        if (dialoguePanel != null)
+        {
+            dialoguePanel.SetActive(true);
+        }
+
+        dialogueText.ForceMeshUpdate();
 
         int total = dialogueText.textInfo.characterCount;
         float duration = total / charactersPerSecond;
@@ -293,22 +323,22 @@ public class SwitchboardGame : MonoBehaviour
             .SetTarget(dialogueText)
             .OnComplete(() =>
             {
+                dialogueText.maxVisibleCharacters = total;
                 SoundManager.StopSound(sounds.dialogueTyping);
             });
     }
 
     private void ShowCharacter(Sprite sprite)
     {
-        Transform parent = characterPosition != null ? characterPosition : dialoguePanel != null ? dialoguePanel.transform : null;
-        if (characterView == null && parent != null)
+        if (characterIcon == null)
         {
-            characterView = PhoneCharacterView.GetOrCreate(parent.gameObject, characterPrefab);
+            return;
         }
-        if (characterView != null && characterPosition != null)
-        {
-            characterView.AttachTo(characterPosition);
-        }
-        characterView?.ShowSprite(sprite);
+
+        characterIcon.raycastTarget = false;
+        characterIcon.preserveAspect = true;
+        characterIcon.sprite = sprite;
+        characterIcon.enabled = sprite != null;
     }
 
     private void AdvanceDialogue()

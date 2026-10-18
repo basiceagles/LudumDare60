@@ -40,33 +40,88 @@ MonoBehaviour:
     shakeLetters: 0
     shakeSpeed: 0
     shakeAmount: 0
-  - text: You had a call with bla bla bla
+  - text: Recently, you received a call from a man screaming about a fire.
     textSize: 32
-    typeSpeed: 3
-    typingClip: {fileID: 8300000, guid: e4c4dd71b69ffa94ea7d564faa16e048, type: 3}
-    typingVolume: 1
-    soundEveryCharacters: 1
-    shakeLetters: 0
-    shakeSpeed: 0
-    shakeAmount: 0
-  badEnding:
-  - text: You didn't do this
-    textSize: 32
-    typeSpeed: 2
+    typeSpeed: 4
     typingClip: {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}
     typingVolume: 1
     soundEveryCharacters: 1
     shakeLetters: 0
     shakeSpeed: 0
     shakeAmount: 0
-  - text: Unfortenely, your decision made consquences.
+  - text: At 9:47 AM, a house on Brooklyn Avenue caught fire due to poorly maintained
+      electrical wiring.
+    textSize: 32
+    typeSpeed: 4
+    typingClip: {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  - text: Within minutes, the flames had spread to at least three neighboring houses.
+    textSize: 32
+    typeSpeed: 4
+    typingClip: {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  badEnding:
+  - text: A local resident called 911, but the fire department arrived too late.
+    textSize: 32
+    typeSpeed: 4
+    typingClip: {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  - text: 'In just eight minutes, the remaining houses were engulfed in flames. '
+    textSize: 32
+    typeSpeed: 5
+    typingClip: {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  - text: No one had called for help sooner.
+    textSize: 32
+    typeSpeed: 3
+    typingClip: {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  - text: The incident claimed eight lives.
     textSize: 32
     typeSpeed: 4
     typingClip: {fileID: 8300000, guid: 55be796263426e4458aec8d1f7fd24be, type: 3}
     typingVolume: 1
     soundEveryCharacters: 1
     shakeLetters: 1
-    shakeSpeed: 25
+    shakeSpeed: 1
+    shakeAmount: 1
+  - text: Among the victims was the entire Rustypaw family.
+    textSize: 32
+    typeSpeed: 5
+    typingClip: {fileID: 8300000, guid: 55be796263426e4458aec8d1f7fd24be, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 1
+    shakeSpeed: 2
+    shakeAmount: 2
+  - text: They burned alive.
+    textSize: 32
+    typeSpeed: 3
+    typingClip: {fileID: 8300000, guid: 55be796263426e4458aec8d1f7fd24be, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 1
+    shakeSpeed: 3
     shakeAmount: 3
   goodEnding:
   - text: Test test test test

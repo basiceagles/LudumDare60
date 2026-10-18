@@ -107,6 +107,13 @@ public class DialoguePlayer : MonoBehaviour
 
         if (dialogueText != null)
         {
+            // With this on, TMP recalculates the vertical alignment from the
+            // descender of the characters that are currently revealed. Since
+            // the text is middle-aligned, revealing the rest of a line (skip
+            // or natural finish) changes that descender and nudges the whole
+            // block up. Basing the alignment on the full line keeps it still.
+            dialogueText.useMaxVisibleDescender = false;
+
             dialogueText.text = "";
             dialogueText.maxVisibleCharacters = 0;
         }

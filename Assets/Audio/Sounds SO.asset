@@ -183,7 +183,10 @@ MonoBehaviour:
     loop: 0
     bypassReverbZones: 1
     mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
-    sounds: []
+    sounds:
+    - {fileID: 8300000, guid: e1e988cd32076e34697d015f0e9bd990, type: 3}
+    - {fileID: 8300000, guid: 83f24220aae2ea944b93cab378eceaa1, type: 3}
+    - {fileID: 8300000, guid: 8960e07f76408764a8e4098bb118177c, type: 3}
   - name: PLUG_DRAG
     volume: 1
     loop: 1
@@ -195,19 +198,24 @@ MonoBehaviour:
     loop: 0
     bypassReverbZones: 1
     mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
-    sounds: []
+    sounds:
+    - {fileID: 8300000, guid: 0451f01844ba28d429ca942c7a7718a6, type: 3}
   - name: PLUG_PUT_DOWN
     volume: 1
     loop: 0
     bypassReverbZones: 1
     mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
-    sounds: []
+    sounds:
+    - {fileID: 8300000, guid: f2688600bd23b4b4db57025334dde304, type: 3}
   - name: PLUG_CANCEL
     volume: 1
     loop: 0
     bypassReverbZones: 1
     mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
-    sounds: []
+    sounds:
+    - {fileID: 8300000, guid: fc8d8e3dd0f382c45a6bf79449e66a67, type: 3}
+    - {fileID: 8300000, guid: eff07d4cd70443046bc96f87c6971d25, type: 3}
+    - {fileID: 8300000, guid: f2688600bd23b4b4db57025334dde304, type: 3}
   - name: SOCKET_HOVER
     volume: 1
     loop: 0
@@ -229,11 +237,12 @@ MonoBehaviour:
     sounds:
     - {fileID: 8300000, guid: e563d7df89a606444bdb5030ee9acdcd, type: 3}
   - name: CALL_HANG_UP
-    volume: 1
+    volume: 0.3
     loop: 0
     bypassReverbZones: 1
     mixer: {fileID: -7044871555353025424, guid: a6506ec1e8bcaed4f992ff94c0720075, type: 2}
-    sounds: []
+    sounds:
+    - {fileID: 8300000, guid: 79378d0cbb5fc8c4da6e37b4f8b2c8ed, type: 3}
   - name: CONNECTION_CORRECT
     volume: 1
     loop: 0
