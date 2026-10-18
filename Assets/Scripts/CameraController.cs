@@ -84,8 +84,9 @@ public class CameraController : MonoBehaviour
             if (mousePos.y <= borderSize) vertical = 1f;
             else if (mousePos.y >= Screen.height - borderSize) vertical = -1f;
 
-            yaw = Mathf.Clamp(yaw + horizontal * rotateSpeed * Time.deltaTime, minSide, maxSide);
-            pitch = Mathf.Clamp(pitch + vertical * rotateSpeed * Time.deltaTime, minUp, maxUp);
+            float speed = rotateSpeed * GameSettings.CameraSensitivity;
+            yaw = Mathf.Clamp(yaw + horizontal * speed * Time.deltaTime, minSide, maxSide);
+            pitch = Mathf.Clamp(pitch + vertical * speed * Time.deltaTime, minUp, maxUp);
         }
 
         if (cam != null)

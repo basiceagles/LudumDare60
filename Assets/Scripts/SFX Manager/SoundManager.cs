@@ -25,6 +25,12 @@ namespace SmallHedge.SoundManager
             }
         }
 
+        private void Start()
+        {
+            AudioMixerGroup group = audioSource != null ? audioSource.outputAudioMixerGroup : null;
+            GameSettings.ApplyAudio(group != null ? group.audioMixer : null);
+        }
+
         public static void PlaySound(SoundType sound, AudioSource source = null, float volume = 1)
         {
             if (!TryGetSound(sound, out SoundList soundList))
