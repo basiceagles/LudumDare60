@@ -41,10 +41,23 @@ public class SwitchboardGame : MonoBehaviour
     public TMP_Text dialogueText;
     [Min(1)] public float charactersPerSecond = 38;
 
+    [Header("Shift")]
+    [Tooltip(
+        "Start the shift as soon as the scene loads. Leave this off to arm " +
+        "the shift from another script instead, for example when the player " +
+        "clicks the phone."
+    )]
+    public bool startOnStart;
+
     [Header("Call Timing")]
     [Min(0f)] public float minSecondsBetweenCalls = 5f;
     [Min(0f)] public float maxSecondsBetweenCalls = 10f;
     [Min(0f)] public float plugHoldSeconds = 1f;
+    [Tooltip(
+        "Seconds before the opening call rings when StartShift() is called " +
+        "without a delay. Negative uses the receiver's own First Call Delay."
+    )]
+    public float firstCallDelayOverride = -1f;
 
     public Transform plug;
     public Camera viewCamera;
@@ -88,6 +101,7 @@ public class SwitchboardGame : MonoBehaviour
     private int lineIndex;
     private bool dragging;
     private bool shiftEnding;
+    private bool shiftStarted;
 
     private Vector3 homePos;
     private Quaternion homeRot;
@@ -174,12 +188,19 @@ public class SwitchboardGame : MonoBehaviour
             }
         }
 
-        RestartShift();
+        // Only arm the shift straight away when asked to. Otherwise another
+        // script calls StartShift() later, for example when the player clicks
+        // the phone.
+        if (startOnStart)
+        {
+            RestartShift();
+        }
     }
 
     private void Update()
     {
-        if (Mouse.current == null)
+        // The menu owns the mouse while it is open.
+        if (GameSettings.MenuOpen || Mouse.current == null)
         {
             return;
         }
@@ -224,8 +245,31 @@ public class SwitchboardGame : MonoBehaviour
         }
     }
 
+    public void StartShift()
+    {
+        StartShift(-1f);
+    }
+
+    // Arms the shift and rings the opening call after the given delay.
+    // A negative delay keeps the receiver's own First Call Delay.
+    public void StartShift(float firstCallDelay)
+    {
+        if (shiftStarted)
+        {
+            return;
+        }
+
+        if (firstCallDelay >= 0f)
+        {
+            firstCallDelayOverride = firstCallDelay;
+        }
+
+        RestartShift();
+    }
+
     public void RestartShift()
     {
+        shiftStarted = true;
         DOTween.Kill(this);
         plug?.DOKill();
         dialogueText?.DOKill();
@@ -277,8 +321,12 @@ public class SwitchboardGame : MonoBehaviour
             return;
         }
 
+        // The very first call uses the delay handed to StartShift() or the
+        // receiver's own start-up delay. Every call after that waits a random
+        // pause, so inserting a plug no longer makes the next call ring the
+        // moment the current one ends.
         float delay = callIndex == 0
-            ? (receiver != null ? Mathf.Max(0f, receiver.firstCallDelay) : 0f)
+            ? FirstCallDelay()
             : RandomSecondsBetweenCalls();
 
         DOVirtual.DelayedCall(delay, () =>
@@ -293,6 +341,18 @@ public class SwitchboardGame : MonoBehaviour
         float min = Mathf.Max(0f, minSecondsBetweenCalls);
         float max = Mathf.Max(min, maxSecondsBetweenCalls);
         return UnityEngine.Random.Range(min, max);
+    }
+
+    // Delay before the opening call rings: the value handed to StartShift()
+    // wins, otherwise the receiver's own start-up delay is used.
+    private float FirstCallDelay()
+    {
+        if (firstCallDelayOverride >= 0f)
+        {
+            return firstCallDelayOverride;
+        }
+
+        return receiver != null ? Mathf.Max(0f, receiver.firstCallDelay) : 0f;
     }
 
     private void BeginEnding()

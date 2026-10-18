@@ -17,6 +17,14 @@ public class CameraController : MonoBehaviour
     public float minSide = -30f;
     public float maxSide = 30f;
 
+    [Header("Sensitivity")]
+    [Tooltip(
+        "Multiplier for the rotation speed. The settings menu drives this " +
+        "with its sensitivity slider; it starts from the saved setting."
+    )]
+    [Min(0f)]
+    public float sensitivity = 1f;
+
     [Header("Right Mouse Zoom (toggle)")]
     [Tooltip("Click the right mouse button to toggle between the default and zoomed FOV.")]
     public bool rmbZoomEnabled = true;
@@ -50,6 +58,9 @@ public class CameraController : MonoBehaviour
         basePitch = NormalizeAngle(e.x);
         baseYaw = NormalizeAngle(e.y);
         baseRoll = NormalizeAngle(e.z);
+
+        // The saved setting wins over the Inspector value.
+        sensitivity = GameSettings.CameraSensitivity;
     }
 
     private static float NormalizeAngle(float angle)
@@ -62,7 +73,7 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        if (Mouse.current == null) return;
+        if (GameSettings.MenuOpen || Mouse.current == null) return;
 
         if (rmbZoomEnabled && Mouse.current.rightButton.wasPressedThisFrame)
         {
@@ -84,7 +95,7 @@ public class CameraController : MonoBehaviour
             if (mousePos.y <= borderSize) vertical = 1f;
             else if (mousePos.y >= Screen.height - borderSize) vertical = -1f;
 
-            float speed = rotateSpeed * GameSettings.CameraSensitivity;
+            float speed = rotateSpeed * sensitivity;
             yaw = Mathf.Clamp(yaw + horizontal * speed * Time.deltaTime, minSide, maxSide);
             pitch = Mathf.Clamp(pitch + vertical * speed * Time.deltaTime, minUp, maxUp);
         }

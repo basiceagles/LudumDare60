@@ -39,7 +39,9 @@ public class SwitchboardStarter : MonoBehaviour
 
     private void Update()
     {
-        if (Mouse.current == null || !Mouse.current.rightButton.wasPressedThisFrame)
+        // Leave the input alone while the settings menu is up.
+        if (GameSettings.MenuOpen || Mouse.current == null ||
+            !Mouse.current.rightButton.wasPressedThisFrame)
             return;
 
         if (playerCamera == null || switchboard == null)

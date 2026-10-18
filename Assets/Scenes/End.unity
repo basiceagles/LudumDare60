@@ -250,6 +250,7 @@ MonoBehaviour:
   dialogues:
   - {fileID: 11400000, guid: a4a866f75b61e054aa64f1ded2bb3907, type: 2}
   - {fileID: 11400000, guid: 926198e6b6d77a842aafc19dc0abea50, type: 2}
+  - {fileID: 11400000, guid: 6ff4b14dfd7c6cf4fbc87ab1f8e2acd8, type: 2}
   dialogueText: {fileID: 737253909}
   dialoguePanel: {fileID: 0}
   typingAudioSource: {fileID: 388916733}

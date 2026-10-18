@@ -38,7 +38,8 @@ public class TextSequence : MonoBehaviour
 
     private void Update()
     {
-        if (Mouse.current == null)
+        // Leave the input alone while the settings menu is up.
+        if (GameSettings.MenuOpen || Mouse.current == null)
             return;
 
         // RMB: Hide first text and show second text

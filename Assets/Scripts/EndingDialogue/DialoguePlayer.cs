@@ -48,7 +48,7 @@ public class DialoguePlayer : MonoBehaviour
 
     private void Update()
     {
-        if (!isPlaying || Mouse.current == null)
+        if (!isPlaying || GameSettings.MenuOpen || Mouse.current == null)
             return;
 
         if (Mouse.current.leftButton.wasPressedThisFrame)

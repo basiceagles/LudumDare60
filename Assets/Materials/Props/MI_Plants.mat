@@ -51,7 +51,7 @@ Material:
     m_Floats:
     - _AlphaClip: 1
     - _AlphaToMask: 1
-    - _Metallic: 0.292
+    - _Metallic: 0.189
     - _Smoothness: 0
     m_Colors: []
   m_BuildTextureStacks: []

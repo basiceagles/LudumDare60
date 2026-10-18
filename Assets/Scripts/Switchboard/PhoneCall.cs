@@ -100,14 +100,12 @@ public class PhoneCall : ScriptableObject
         return Matches(lineId, correctLineId);
     }
 
+    // Remembers how the call ended so the End scene can play the matching
+    // ending of the referenced ending asset. The result is kept in memory
+    // only, so it is gone as soon as the player stops or closes the game.
     public void ApplyEndingResult(bool correctLine)
     {
-        if (ending == null)
-        {
-            return;
-        }
-
-        ending.ForceEnding(correctLine);
+        EndingState.Set(ending, correctLine);
     }
 
     private static bool Matches(string first, string second)
