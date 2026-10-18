@@ -20,28 +20,18 @@ public class DialogueSO : ScriptableObject
     public List<DialogueLine> goodEnding =
         new List<DialogueLine>();
 
-    [Header("Forced Ending")]
+    [Header("Forced Ending (manual override)")]
     [Tooltip(
-        "Play this asset's bad ending no matter what. The switchboard turns " +
-        "this on when the player plugs the wrong connector, and it can also " +
-        "be ticked by hand to test the bad ending."
+        "Tick by hand to always play this asset's bad ending. Useful for " +
+        "testing the End scene directly: what the player does during a shift " +
+        "is kept in memory only and takes priority over this."
     )]
     public bool forceBadEnding;
 
     [Tooltip(
-        "Play this asset's good ending no matter what. The switchboard turns " +
-        "this on when the player plugs the correct connector, and it can also " +
-        "be ticked by hand to test the good ending."
+        "Tick by hand to always play this asset's good ending. Useful for " +
+        "testing the End scene directly: what the player does during a shift " +
+        "is kept in memory only and takes priority over this."
     )]
     public bool forceGoodEnding;
-
-    public bool HasForcedEnding => forceBadEnding || forceGoodEnding;
-
-    // Called by the switchboard with the result of the plug the player used
-    // on the call that feeds this ending.
-    public void ForceEnding(bool good)
-    {
-        forceGoodEnding = good;
-        forceBadEnding = !good;
-    }
 }

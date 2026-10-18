@@ -70,9 +70,9 @@ public class DialoguePlayer : MonoBehaviour
         }
     }
 
-    // Uses the force flags stored on the ending assets first (the switchboard
-    // sets them from the plug the player used), then falls back to the
-    // Inspector debug toggles. If both sides say something, Bad Ending wins.
+    // Uses what the player did during the shift first (kept in memory only),
+    // then the manual force flags on the ending assets, then the Inspector
+    // debug toggles. If both sides say something, Bad Ending wins.
     public void PlayDialogue()
     {
         PlayDialogue(ResolveGoodEnding());
@@ -80,6 +80,15 @@ public class DialoguePlayer : MonoBehaviour
 
     private bool ResolveGoodEnding()
     {
+        foreach (DialogueSO dialogueData in dialogues)
+        {
+            if (dialogueData == null)
+                continue;
+
+            if (EndingState.TryGet(dialogueData, out bool playerGood))
+                return playerGood;
+        }
+
         foreach (DialogueSO dialogueData in dialogues)
         {
             if (dialogueData == null)
@@ -100,6 +109,26 @@ public class DialoguePlayer : MonoBehaviour
 
         // Nothing was forced: default to the bad ending.
         return false;
+    }
+
+    // Ending version to play for one asset: the player's decision for that
+    // asset wins, then its manual Inspector flag, then the fallback taken
+    // when playback started.
+    private static bool ResolveEndingFor(
+        DialogueSO dialogueData,
+        bool fallback
+    )
+    {
+        if (EndingState.TryGet(dialogueData, out bool playerGood))
+            return playerGood;
+
+        if (dialogueData.forceBadEnding)
+            return false;
+
+        if (dialogueData.forceGoodEnding)
+            return true;
+
+        return fallback;
     }
 
     // Call from another script to choose the ending.
@@ -159,13 +188,10 @@ public class DialoguePlayer : MonoBehaviour
                 }
             }
 
-            // Play the selected ending for this asset. An asset that was
-            // forced (by the switchboard, or by its own Inspector flag) picks
-            // its own version, otherwise the decision taken when playback
-            // started is used.
-            bool useGoodEnding = dialogueData.forceBadEnding
-                ? false
-                : dialogueData.forceGoodEnding || goodEnding;
+            // Play the selected ending for this asset. What the player did
+            // during the shift wins, then the asset's manual force flag,
+            // otherwise the decision taken when playback started is used.
+            bool useGoodEnding = ResolveEndingFor(dialogueData, goodEnding);
 
             List<DialogueLine> ending = useGoodEnding
                 ? dialogueData.goodEnding

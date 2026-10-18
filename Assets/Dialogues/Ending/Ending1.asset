@@ -161,5 +161,5 @@ MonoBehaviour:
     shakeLetters: 0
     shakeSpeed: 0
     shakeAmount: 0
-  forceBadEnding: 1
+  forceBadEnding: 0
   forceGoodEnding: 0

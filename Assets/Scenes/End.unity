@@ -249,13 +249,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogues:
   - {fileID: 11400000, guid: a4a866f75b61e054aa64f1ded2bb3907, type: 2}
+  - {fileID: 11400000, guid: 926198e6b6d77a842aafc19dc0abea50, type: 2}
   dialogueText: {fileID: 737253909}
   dialoguePanel: {fileID: 0}
   typingAudioSource: {fileID: 388916733}
   avoidOverlappingTypingSounds: 1
   typingSoundMinInterval: 0
   forceGoodEnding: 0
-  forceBadEnding: 0
+  forceBadEnding: 1
 --- !u!4 &388916735
 Transform:
   m_ObjectHideFlags: 0

@@ -43,7 +43,7 @@ public class PhoneCall : ScriptableObject
     public PhoneLine[] informationReply = new PhoneLine[0];
     public string line6Id = "service";
     public PhoneLine[] line6Reply = new PhoneLine[0];
-    public string line7Id = "graveyard";
+    public string line7Id = "hotel";
     public PhoneLine[] line7Reply = new PhoneLine[0];
     public string line8Id = "disconnect";
     public PhoneLine[] line8Reply = new PhoneLine[0];
@@ -85,15 +85,11 @@ public class PhoneCall : ScriptableObject
     }
 
     // Remembers how the call ended so the End scene can play the matching
-    // ending of the referenced ending asset.
+    // ending of the referenced ending asset. The result is kept in memory
+    // only, so it is gone as soon as the player stops or closes the game.
     public void ApplyEndingResult(bool correctLine)
     {
-        if (ending == null)
-        {
-            return;
-        }
-
-        ending.ForceEnding(correctLine);
+        EndingState.Set(ending, correctLine);
     }
 
     private static bool Matches(string first, string second)
