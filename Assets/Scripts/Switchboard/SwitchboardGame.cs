@@ -36,28 +36,15 @@ public class SwitchboardGame : MonoBehaviour
     public SwitchboardSounds sounds = new SwitchboardSounds();
     public PhoneCall[] calls = new PhoneCall[0];
     public GameObject dialoguePanel;
-    [Tooltip("Image существующего NPC_Icon. Спрайт из звонка или реплики меняет его Source Image.")]
     public Image characterIcon;
     public TMP_Text speakerText;
     public TMP_Text dialogueText;
     [Min(1)] public float charactersPerSecond = 38;
 
-    [Header("Start")]
-    [Tooltip(
-        "Start the first call from Start(). Leave this off when an RMB " +
-        "interaction should arm the shift through StartShift() instead."
-    )]
-    public bool startOnStart;
-
     [Header("Call Timing")]
-    [Tooltip("Shortest random pause, in seconds, before the next call rings.")]
     [Min(0f)] public float minSecondsBetweenCalls = 5f;
-    [Tooltip("Longest random pause, in seconds, before the next call rings.")]
     [Min(0f)] public float maxSecondsBetweenCalls = 10f;
-    [Tooltip("Seconds the plug stays in the socket after a call ends before it returns home.")]
     [Min(0f)] public float plugHoldSeconds = 1f;
-    [Tooltip("Seconds before the opening call rings when StartShift() is called without a delay. Negative uses the receiver's own First Call Delay.")]
-    public float firstCallDelayOverride = -1f;
 
     public Transform plug;
     public Camera viewCamera;
@@ -66,22 +53,23 @@ public class SwitchboardGame : MonoBehaviour
     public SwitchboardSocket[] sockets = new SwitchboardSocket[0];
     public Color hoverColor = new Color(0.95f, 0.7f, 0.3f);
     public Transform plugTip;
+    [Min(0.2f)] public float maxDragDistance = 1.7f;
 
-    public Transform cableAnchor;
-    public LineRenderer cable;
+    private void OnValidate()
+    {
+        if (maxDragDistance < 1.7f)
+        {
+            maxDragDistance = 1.7f;
+        }
+    }
 
     [Header("Call Rules")]
-    [Tooltip("When on, the first call ends with its dialogue and skips the plug step, so the between-calls timer starts right away.")]
     public bool firstCallSkipsPlug = true;
 
     [Header("End Fade")]
-    [Tooltip("Full screen UI image used to fade the screen out when the last call ends. It is shown and its alpha is tweened from 0 to 1.")]
     public Image fadeImage;
-    [Tooltip("Seconds the fade to black takes.")]
     [Min(0f)] public float fadeDuration = 1.5f;
-    [Tooltip("Scene loaded once the fade is done. Leave empty to stay on the ending screen.")]
     public string nextSceneName;
-    [Tooltip("Optional SceneLoader called once the fade is done. Takes priority over the scene name field above.")]
     public SceneLoader nextSceneLoader;
 
     private enum Phase
@@ -99,7 +87,6 @@ public class SwitchboardGame : MonoBehaviour
     private int callIndex = -1;
     private int lineIndex;
     private bool dragging;
-    private bool shiftStarted;
     private bool shiftEnding;
 
     private Vector3 homePos;
@@ -119,6 +106,11 @@ public class SwitchboardGame : MonoBehaviour
 
     private void Start()
     {
+        if (maxDragDistance < 1.7f)
+        {
+            maxDragDistance = 1.7f;
+        }
+
         if (receiver == null)
         {
             receiver = FindFirstObjectByType<PhoneReceiver>();
@@ -182,18 +174,7 @@ public class SwitchboardGame : MonoBehaviour
             }
         }
 
-        if (cable != null)
-        {
-            cable.positionCount = 24;
-        }
-
-        // The shift does not start by itself any more. The first call is
-        // armed by StartShift(), which an RMB interaction calls once the
-        // player interacts with the switchboard.
-        if (startOnStart)
-        {
-            StartShift();
-        }
+        RestartShift();
     }
 
     private void Update()
@@ -235,8 +216,6 @@ public class SwitchboardGame : MonoBehaviour
                 break;
 
             case Phase.Finished:
-                // While the ending fade is running the shift must not restart
-                // under it, so clicks are ignored until the scene hands over.
                 if (!shiftEnding && calls.Length > 0)
                 {
                     RestartShift();
@@ -245,31 +224,8 @@ public class SwitchboardGame : MonoBehaviour
         }
     }
 
-    public void StartShift()
-    {
-        StartShift(-1f);
-    }
-
-    // Arms the shift and rings the opening call after the given delay.
-    // A negative delay keeps the receiver's own First Call Delay.
-    public void StartShift(float firstCallDelay)
-    {
-        if (shiftStarted)
-        {
-            return;
-        }
-
-        if (firstCallDelay >= 0f)
-        {
-            firstCallDelayOverride = firstCallDelay;
-        }
-
-        RestartShift();
-    }
-
     public void RestartShift()
     {
-        shiftStarted = true;
         DOTween.Kill(this);
         plug?.DOKill();
         dialogueText?.DOKill();
@@ -302,8 +258,7 @@ public class SwitchboardGame : MonoBehaviour
         {
             dialoguePanel.SetActive(false);
         }
-        // Keep the plug seated in the socket for a beat after the call ends
-        // instead of yanking it home the instant the dialogue finishes.
+
         float plugHold = Mathf.Max(0f, plugHoldSeconds);
         if (plugHold > 0f)
         {
@@ -322,12 +277,8 @@ public class SwitchboardGame : MonoBehaviour
             return;
         }
 
-        // The very first call uses the delay handed to StartShift() or the
-        // receiver's own start-up delay. Every call after that waits a random
-        // pause, so inserting a plug no longer makes the next call ring the
-        // moment the current one ends.
         float delay = callIndex == 0
-            ? FirstCallDelay()
+            ? (receiver != null ? Mathf.Max(0f, receiver.firstCallDelay) : 0f)
             : RandomSecondsBetweenCalls();
 
         DOVirtual.DelayedCall(delay, () =>
@@ -337,32 +288,13 @@ public class SwitchboardGame : MonoBehaviour
         }, false).SetLink(gameObject).SetTarget(this).SetId(this);
     }
 
-    // Random pause before the next call rings, kept between the two
-    // inspector values (a reversed range falls back to the minimum).
     private float RandomSecondsBetweenCalls()
     {
         float min = Mathf.Max(0f, minSecondsBetweenCalls);
-
         float max = Mathf.Max(min, maxSecondsBetweenCalls);
-
         return UnityEngine.Random.Range(min, max);
     }
 
-    // Delay before the opening call rings: the value handed to StartShift()
-    // wins, otherwise the receiver's own start-up delay is used.
-    private float FirstCallDelay()
-    {
-        if (firstCallDelayOverride >= 0f)
-        {
-            return firstCallDelayOverride;
-        }
-
-        return receiver != null ? Mathf.Max(0f, receiver.firstCallDelay) : 0f;
-    }
-
-    // The last call is over: fade the screen out and hand over to the
-    // configured scene. Nothing is armed when no fader and no scene are set,
-    // so the old "click to run the shift again" flow keeps working.
     private void BeginEnding()
     {
         if (fadeImage == null && nextSceneLoader == null && string.IsNullOrWhiteSpace(nextSceneName))
@@ -371,10 +303,6 @@ public class SwitchboardGame : MonoBehaviour
         }
 
         shiftEnding = true;
-
-        // Let the plug finish its hold first, so the screen only goes dark
-        // once the call is really over (the return animation overlaps the
-        // start of the fade).
         float delay = Mathf.Max(0f, plugHoldSeconds);
         if (delay > 0f)
         {
@@ -472,10 +400,6 @@ public class SwitchboardGame : MonoBehaviour
         dialogueText.text = line.text;
         dialogueText.maxVisibleCharacters = 0;
 
-        // TextMeshPro only rebuilds its mesh while the object is active.
-        // ForceMeshUpdate() below would silently do nothing if the panel was
-        // still hidden, leaving textInfo.characterCount at the previous line's
-        // length and cutting the new line short, so show the panel first.
         if (dialoguePanel != null)
         {
             dialoguePanel.SetActive(true);
@@ -543,8 +467,6 @@ public class SwitchboardGame : MonoBehaviour
             SoundManager.PlaySound(sounds.dialogueFinished);
             dialoguePanel.SetActive(false);
 
-            // The opening call can be a plain conversation: when it skips the
-            // plug step the between-calls timer starts the moment it is over.
             if (SkipPlugForCurrentCall)
             {
                 NextCall();
@@ -586,16 +508,34 @@ public class SwitchboardGame : MonoBehaviour
             return;
         }
 
+        int hovered = GetHoveredSocket(ray, out RaycastHit hit);
+        HighlightSocket(hovered);
+
         if (dragPlane.Raycast(ray, out float dist))
         {
             plug.DOKill();
             float follow = 1f - Mathf.Exp(-35f * Time.deltaTime);
-            plug.position = GetSafeDragPosition(ray, dist, follow);
+            Vector3 rawPos = GetSafeDragPosition(ray, dist, follow);
+
+            if (Vector3.Distance(homePos, rawPos) > maxDragDistance)
+            {
+                rawPos = homePos + (rawPos - homePos).normalized * maxDragDistance;
+            }
+
+            Vector3 vp = viewCamera.WorldToViewportPoint(rawPos);
+            vp.x = Mathf.Clamp(vp.x, 0.05f, 0.95f);
+            vp.y = Mathf.Clamp(vp.y, 0.05f, 0.95f);
+            vp.z = Mathf.Max(vp.z, viewCamera.nearClipPlane + 0.2f);
+            rawPos = viewCamera.ViewportToWorldPoint(vp);
+
+            if (rawPos.y < homePos.y - 0.12f)
+            {
+                rawPos.y = homePos.y - 0.12f;
+            }
+
+            plug.position = rawPos;
             plug.rotation = homeRot;
         }
-
-        int hovered = GetHoveredSocket(ray, out RaycastHit hit);
-        HighlightSocket(hovered);
 
         if (Mouse.current.leftButton.wasReleasedThisFrame)
         {
@@ -629,8 +569,6 @@ public class SwitchboardGame : MonoBehaviour
 
     private Vector3 GetSafeDragPosition(Ray ray, float distance, float follow = 1f)
     {
-        // ComputePenetration needs an enabled collider in this Unity version.
-        // Enable this trigger only during the query, never during simulation.
         dragProbe.enabled = true;
         try
         {
@@ -651,8 +589,6 @@ public class SwitchboardGame : MonoBehaviour
         Vector3 firstNormal = Vector3.zero;
         Vector3 secondNormal = Vector3.zero;
 
-        // Sweep each part of the slide. A tween straight to the final position
-        // would cut through a corner even when both end points were clear.
         for (int step = 0; step < 6 && remaining.sqrMagnitude > 0.000001f; step++)
         {
             float length = remaining.magnitude;
@@ -694,12 +630,12 @@ public class SwitchboardGame : MonoBehaviour
     {
         if (dragProbe == null)
         {
-            // Reusable query shape; kept out of the physics simulation.
             dragProbe = gameObject.AddComponent<BoxCollider>();
             dragProbe.enabled = false;
             dragProbe.isTrigger = true;
             dragProbe.hideFlags = HideFlags.HideAndDontSave;
         }
+
         Vector3 size = (dragHalfExtents + Vector3.one * DragSurfaceGap) * 2f;
         Vector3 scale = transform.lossyScale;
         dragProbe.center = Vector3.zero;
@@ -758,8 +694,6 @@ public class SwitchboardGame : MonoBehaviour
                 continue;
             }
             RaycastHit contact = hit;
-            // An overlapping BoxCast reports -direction as its normal. Use
-            // the actual separating normal so moving away cannot be blocked.
             if (hit.distance <= 0.00001f && Physics.ComputePenetration(dragProbe, center, Quaternion.identity,
                     obstacle, obstacle.transform.position, obstacle.transform.rotation,
                     out Vector3 normal, out _))
@@ -832,19 +766,13 @@ public class SwitchboardGame : MonoBehaviour
 
         AnimatePlug(target, targetRot, 0.25f, () =>
         {
-            // Grab the call and the chosen connector now, so a hang up during
-            // the insert animation cannot shift them under us.
             PhoneCall call = calls[callIndex];
             string lineId = sockets[socketIndex].lineId;
             bool correct = call.IsCorrectLine(lineId);
 
             SoundManager.PlaySound(sounds.plugInsert);
             SoundManager.PlaySound(correct ? sounds.correctConnection : sounds.wrongConnection);
-
-            // The connector the player chose decides this call's ending:
-            // correct line = good ending, anything else = bad ending.
             call.ApplyEndingResult(correct);
-
             PlayDialogue(call.ReplyFor(lineId), Phase.Reply);
         });
     }
@@ -912,26 +840,6 @@ public class SwitchboardGame : MonoBehaviour
             highlight.SetColor("_BaseColor", isHovered ? hoverColor : socketColors[i]);
             highlight.SetColor("_EmissionColor", isHovered ? hoverColor * 0.8f : Color.black);
             socketRenderers[i].SetPropertyBlock(highlight);
-        }
-    }
-
-    private void LateUpdate()
-    {
-        if (cable == null || cableAnchor == null || plug == null)
-        {
-            return;
-        }
-
-        Vector3 end = plug.TransformPoint(Vector3.up * 0.3f);
-        int count = cable.positionCount;
-        for (int i = 0; i < count; i++)
-        {
-            float t = (float)i / (count - 1);
-            float sag = Mathf.Sin(t * Mathf.PI);
-            Vector3 pt = Vector3.Lerp(cableAnchor.position, end, t);
-            pt.y = Mathf.Max(0.99f, pt.y - sag * 0.3f);
-            pt.z -= sag * 0.25f;
-            cable.SetPosition(i, pt);
         }
     }
 

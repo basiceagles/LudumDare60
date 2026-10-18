@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [Serializable]
 public class PhoneLine
@@ -25,28 +26,43 @@ public class PhoneCall : ScriptableObject
     public PhoneLine[] conversation = new PhoneLine[0];
 
     [Header("Ending")]
-    [Tooltip(
-        "Ending asset this call feeds (for example Ending1). Plugging the " +
-        "correct connector forces its good ending, any other connector " +
-        "forces its bad ending."
-    )]
     public DialogueSO ending;
     public string policeLineId = "police";
     public PhoneLine[] policeReply = new PhoneLine[0];
-    public string psychiatristLineId = "ambulance";
-    public PhoneLine[] psychiatristReply = new PhoneLine[0];
-    public string ambulanceLineId = "psycho";
+
+    [FormerlySerializedAs("psychiatristLineId")]
+    public string ambulanceLineId = "ambulance";
+    [FormerlySerializedAs("psychiatristReply")]
     public PhoneLine[] ambulanceReply = new PhoneLine[0];
+
+    [FormerlySerializedAs("ambulanceLineId")]
+    public string psychoLineId = "psycho";
+    [FormerlySerializedAs("ambulanceReply")]
+    public PhoneLine[] psychoReply = new PhoneLine[0];
+
     public string fireLineId = "fire";
     public PhoneLine[] fireReply = new PhoneLine[0];
-    public string informationLineId = "pizza";
-    public PhoneLine[] informationReply = new PhoneLine[0];
-    public string line6Id = "service";
-    public PhoneLine[] line6Reply = new PhoneLine[0];
-    public string line7Id = "hotel";
-    public PhoneLine[] line7Reply = new PhoneLine[0];
-    public string line8Id = "disconnect";
-    public PhoneLine[] line8Reply = new PhoneLine[0];
+
+    [FormerlySerializedAs("informationLineId")]
+    public string pizzaLineId = "pizza";
+    [FormerlySerializedAs("informationReply")]
+    public PhoneLine[] pizzaReply = new PhoneLine[0];
+
+    [FormerlySerializedAs("line6Id")]
+    public string serviceLineId = "service";
+    [FormerlySerializedAs("line6Reply")]
+    public PhoneLine[] serviceReply = new PhoneLine[0];
+
+    [FormerlySerializedAs("line7Id")]
+    public string graveyardLineId = "graveyard";
+    [FormerlySerializedAs("line7Reply")]
+    public PhoneLine[] graveyardReply = new PhoneLine[0];
+
+    [FormerlySerializedAs("line8Id")]
+    public string disconnectLineId = "disconnect";
+    [FormerlySerializedAs("line8Reply")]
+    public PhoneLine[] disconnectReply = new PhoneLine[0];
+
     public LineReply[] additionalReplies = new LineReply[0];
 
     public PhoneLine[] ReplyFor(string lineId)
@@ -57,13 +73,13 @@ public class PhoneCall : ScriptableObject
         }
 
         if (Matches(lineId, policeLineId)) return policeReply ?? Array.Empty<PhoneLine>();
-        if (Matches(lineId, psychiatristLineId)) return psychiatristReply ?? Array.Empty<PhoneLine>();
         if (Matches(lineId, ambulanceLineId)) return ambulanceReply ?? Array.Empty<PhoneLine>();
+        if (Matches(lineId, psychoLineId)) return psychoReply ?? Array.Empty<PhoneLine>();
         if (Matches(lineId, fireLineId)) return fireReply ?? Array.Empty<PhoneLine>();
-        if (Matches(lineId, informationLineId)) return informationReply ?? Array.Empty<PhoneLine>();
-        if (Matches(lineId, line6Id)) return line6Reply ?? Array.Empty<PhoneLine>();
-        if (Matches(lineId, line7Id)) return line7Reply ?? Array.Empty<PhoneLine>();
-        if (Matches(lineId, line8Id)) return line8Reply ?? Array.Empty<PhoneLine>();
+        if (Matches(lineId, pizzaLineId)) return pizzaReply ?? Array.Empty<PhoneLine>();
+        if (Matches(lineId, serviceLineId)) return serviceReply ?? Array.Empty<PhoneLine>();
+        if (Matches(lineId, graveyardLineId)) return graveyardReply ?? Array.Empty<PhoneLine>();
+        if (Matches(lineId, disconnectLineId)) return disconnectReply ?? Array.Empty<PhoneLine>();
 
         if (additionalReplies != null)
         {
@@ -84,12 +100,14 @@ public class PhoneCall : ScriptableObject
         return Matches(lineId, correctLineId);
     }
 
-    // Remembers how the call ended so the End scene can play the matching
-    // ending of the referenced ending asset. The result is kept in memory
-    // only, so it is gone as soon as the player stops or closes the game.
     public void ApplyEndingResult(bool correctLine)
     {
-        EndingState.Set(ending, correctLine);
+        if (ending == null)
+        {
+            return;
+        }
+
+        ending.ForceEnding(correctLine);
     }
 
     private static bool Matches(string first, string second)
