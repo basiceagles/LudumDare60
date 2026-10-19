@@ -28,10 +28,10 @@ MonoBehaviour:
     text: (Then, footsteps begin to grow louder and louder.)
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: Oh, am I still on the call?
+    text: 'Hello? Looks like somebody called and just left the phone off the hook. '
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: Could you please disconnect me?
+    text: Could you disconnect the call?
   ending: {fileID: 0}
   policeLineId: police
   policeReply: []
