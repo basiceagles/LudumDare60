@@ -34,19 +34,43 @@ MonoBehaviour:
     text: Could you disconnect the call?
   ending: {fileID: 0}
   policeLineId: police
-  policeReply: []
+  policeReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: (No response)
   ambulanceLineId: ambulance
-  ambulanceReply: []
+  ambulanceReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: (No response)
   psychoLineId: psycho
-  psychoReply: []
+  psychoReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: (No response)
   fireLineId: fire
-  fireReply: []
+  fireReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: (No response)
   pizzaLineId: pizza
-  pizzaReply: []
+  pizzaReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: (No response)
   serviceLineId: service
-  serviceReply: []
+  serviceReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: (No response)
   graveyardLineId: hotel
-  graveyardReply: []
+  graveyardReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: (No response)
   disconnectLineId: disconnect
-  disconnectReply: []
+  disconnectReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: (Click. The line goes quiet.)
   additionalReplies: []

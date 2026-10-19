@@ -145,5 +145,8 @@ MonoBehaviour:
 
 '
   disconnectLineId: disconnect
-  disconnectReply: []
+  disconnectReply:
+  - speaker: ...
+    characterSprite: {fileID: 0}
+    text: ...
   additionalReplies: []

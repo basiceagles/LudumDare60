@@ -110,5 +110,8 @@ MonoBehaviour:
     text: Hotel, hello. You've got the wrong number, sir. This is a hotel, not a
       police station.
   disconnectLineId: disconnect
-  disconnectReply: []
+  disconnectReply:
+  - speaker: ...
+    characterSprite: {fileID: 0}
+    text: ...
   additionalReplies: []

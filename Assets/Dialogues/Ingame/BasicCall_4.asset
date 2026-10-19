@@ -32,8 +32,7 @@ MonoBehaviour:
       since I was young!
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: But to me, it seems like everything is okay. Maybe you have a different
-      opinion.
+    text: But to me, it seems like everything is okay. Maybe you think otherwise?
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
     text: Oh, never mind. Do you know of any places where I can take a nap and rest?
@@ -42,22 +41,43 @@ MonoBehaviour:
     text: Like a hotel or a motel, anything?
   ending: {fileID: 0}
   policeLineId: police
-  policeReply: []
+  policeReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: Police? Uhm... did I do something wrong?
   ambulanceLineId: ambulance
-  ambulanceReply: []
+  ambulanceReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: I'm not sick, sir. Just really tired.
   psychoLineId: psycho
-  psychoReply: []
+  psychoReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: I said I want to rest, not talk about my feelings!
   fireLineId: fire
-  fireReply: []
+  fireReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: Wait, is something burning? I just need a bed...
   pizzaLineId: pizza
-  pizzaReply: []
+  pizzaReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: Pizza sounds nice, but I'd rather have a pillow.
   serviceLineId: service
-  serviceReply: []
+  serviceReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: Thanks, but I don't even have a house to fix yet.
   graveyardLineId: hotel
   graveyardReply:
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
     text: Thanks!
   disconnectLineId: disconnect
-  disconnectReply: []
+  disconnectReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: ...
   additionalReplies: []
