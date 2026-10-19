@@ -14,25 +14,94 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Story3
   characterSprite: {fileID: 21300000, guid: 1620a71ff971cf24fa7799f8db415271, type: 3}
-  correctLineId: fire
+  correctLineId: police
   conversation:
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: HEY!!!
-  ending: {fileID: 11400000, guid: a4a866f75b61e054aa64f1ded2bb3907, type: 2}
+    text: Hey, you!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: I ORDER YOU TO LISTEN TO ME!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: YES, EXACTLY YOU!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: The guy who plugs and unplugs stuff, connects wires, and connects people!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: YOU MUST TRUST ME!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: Today, I'm going to do something SPECIAL!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: THEY MUST PAY!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: THEY MUST PAY FOR ALL THE PAIN THEY'VE CAUSED!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: They're taking our money and doing NOTHING!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: 'All the murders, all the trouble that''s been happening around here...
+
+
+'
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: You probably know what I'm talking about!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: AND THEY DON'T CARE!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: AND REMEMBER, THERE'S ONLY ONE RULE!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: Never...
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: NEVER tell anybody that we had this conversation.
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: NOT YOUR FRIENDS. NOT YOUR FAMILY. NOBODY!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: AND ESPECIALLY NOT THE GOVERNMENT!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: I ORDER YOU! DO YOU HEAR ME?!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: NEVER TELL THE GOVERNMENT ABOUT THIS CONVERSATION!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: Because if you do...
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: If you even THINK about telling them...
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: YOU'LL PAY, TOO!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: DO YOU UNDERSTAND ME?!
+  ending: {fileID: 11400000, guid: 9f9e3afc19a3fb74e809a45468279f5b, type: 2}
   policeLineId: police
   policeReply:
-  - speaker: Caller
+  - speaker: Police
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: (You heard two loud coughs)
-  - speaker: Caller
+    text: Thanks, we'll deal with it.
+  - speaker: Police
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
     text: (The caller suddenly hung up)
-  ambulanceLineId: psycho
+  ambulanceLineId: ambulance
   ambulanceReply:
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: (You heard two loud coughs)
+    text: (You heard one loud explosion at the background)
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
     text: (The caller suddenly hung up)
@@ -40,23 +109,23 @@ MonoBehaviour:
   psychoReply:
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: (You heard two loud coughs)
+    text: (You heard one loud explosion at the background)
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
     text: (The caller suddenly hung up)
   fireLineId: fire
   fireReply:
-  - speaker: 911
+  - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: 911, we've got your call.
-  - speaker: 911
+    text: (You heard one loud explosion at the background)
+  - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: The fire truck is on the way.
+    text: (The caller suddenly hung up)
   pizzaLineId: pizza
   pizzaReply:
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: (You heard two loud coughs)
+    text: (You heard one loud explosion at the background)
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
     text: (The caller suddenly hung up)
@@ -64,7 +133,7 @@ MonoBehaviour:
   serviceReply:
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: (You heard two loud coughs)
+    text: (You heard one loud explosion at the background)
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
     text: (The caller suddenly hung up)
@@ -72,7 +141,7 @@ MonoBehaviour:
   graveyardReply:
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: (You heard two loud coughs)
+    text: (You heard one loud explosion at the background)
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
     text: (The caller suddenly hung up)
@@ -80,7 +149,7 @@ MonoBehaviour:
   disconnectReply:
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: (You heard two loud coughs)
+    text: (You heard one loud explosion at the background)
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
     text: (The caller suddenly hung up)

@@ -1,0 +1,132 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b1906376723fef4e94fede1f6581be3, type: 3}
+  m_Name: Ending4
+  m_EditorClassIdentifier: 
+  mainDialogue:
+  - text: Recently, you received a call from a victim who reported a robbery at 23
+      Might Street.
+    textSize: 32
+    typeSpeed: 4
+    typingClip: {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  - text: At 1:37 PM, two masked criminals entered the National Bank on Might Street.
+    textSize: 32
+    typeSpeed: 4
+    typingClip: {fileID: 8300000, guid: e4c4dd71b69ffa94ea7d564faa16e048, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  badEnding:
+  - text: Special forces were dispatched to the scene.
+    textSize: 32
+    typeSpeed: 8
+    typingClip: {fileID: 8300000, guid: e4c4dd71b69ffa94ea7d564faa16e048, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 1
+    shakeSpeed: 1
+    shakeAmount: 1
+  - text: The robbers intended to steal around $200,000 and were arrested while trying
+      to leave town.
+    textSize: 32
+    typeSpeed: 6
+    typingClip: {fileID: 8300000, guid: e4c4dd71b69ffa94ea7d564faa16e048, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  - text: However, the ambulance service hadn't been informed about the casualties.
+    textSize: 32
+    typeSpeed: 4
+    typingClip: {fileID: 8300000, guid: e4c4dd71b69ffa94ea7d564faa16e048, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  - text: But something terrible had just happened...
+    textSize: 32
+    typeSpeed: 3
+    typingClip: {fileID: 8300000, guid: e4c4dd71b69ffa94ea7d564faa16e048, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  - text: 21-year-old Mark Servalius died from blood loss before the ambulance arrived...
+    textSize: 32
+    typeSpeed: 8
+    typingClip: {fileID: 8300000, guid: e4c4dd71b69ffa94ea7d564faa16e048, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 1
+    shakeSpeed: 1
+    shakeAmount: 1
+  goodEnding:
+  - text: Nobody was able to call the police, but the local police department had
+      already learned about the robbery.
+    textSize: 32
+    typeSpeed: 5
+    typingClip: {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  - text: Special forces were dispatched to the scene.
+    textSize: 32
+    typeSpeed: 2
+    typingClip: {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  - text: The robbers intended to steal around $200,000, but they were arrested while
+      trying to leave town.
+    textSize: 32
+    typeSpeed: 7
+    typingClip: {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  - text: An ambulance arrived just in time, and 21-year-old Mark Servalius, who
+      had suffered several gunshot wounds, was saved.
+    textSize: 32
+    typeSpeed: 7
+    typingClip: {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  - text: Something terrible had just been avoided...
+    textSize: 32
+    typeSpeed: 3
+    typingClip: {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  forceBadEnding: 0
+  forceGoodEnding: 0

@@ -1,0 +1,187 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b1906376723fef4e94fede1f6581be3, type: 3}
+  m_Name: Ending3
+  m_EditorClassIdentifier: 
+  mainDialogue:
+  - text: 'Recently, you received a call from a man who tried to manipulate you by
+      screaming loudly and ordering you to listen to him.
+
+
+'
+    textSize: 32
+    typeSpeed: 8
+    typingClip: {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  - text: An unknown person attempted to plant a bomb near the embassy.
+    textSize: 32
+    typeSpeed: 4
+    typingClip: {fileID: 8300000, guid: e4c4dd71b69ffa94ea7d564faa16e048, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  badEnding:
+  - text: At 12:45 AM, a loud explosion was heard near Bluesky Lane.
+    textSize: 32
+    typeSpeed: 3
+    typingClip: {fileID: 8300000, guid: e4c4dd71b69ffa94ea7d564faa16e048, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  - text: At 12:48 AM, the police and emergency services arrived.
+    textSize: 32
+    typeSpeed: 3
+    typingClip: {fileID: 8300000, guid: e4c4dd71b69ffa94ea7d564faa16e048, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  - text: There was widespread panic, and barely anyone understood what had happened.
+    textSize: 32
+    typeSpeed: 4
+    typingClip: {fileID: 8300000, guid: e4c4dd71b69ffa94ea7d564faa16e048, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  - text: The embassy building had been completely destroyed.
+    textSize: 32
+    typeSpeed: 4
+    typingClip: {fileID: 8300000, guid: e4c4dd71b69ffa94ea7d564faa16e048, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  - text: But something terrible had just happened...
+    textSize: 32
+    typeSpeed: 3
+    typingClip: {fileID: 8300000, guid: e4c4dd71b69ffa94ea7d564faa16e048, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  - text: Due to the unstable soil and the force of the explosion, the ground near
+      the school gave way, causing the building to collapse.
+    textSize: 32
+    typeSpeed: 8
+    typingClip: {fileID: 8300000, guid: 55be796263426e4458aec8d1f7fd24be, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  - text: 23 people were trapped beneath the rubble.
+    textSize: 32
+    typeSpeed: 3
+    typingClip: {fileID: 8300000, guid: 55be796263426e4458aec8d1f7fd24be, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 1
+    shakeSpeed: 1
+    shakeAmount: 1
+  - text: 8 of them spent 5 hours buried beneath.
+    textSize: 32
+    typeSpeed: 3
+    typingClip: {fileID: 8300000, guid: 55be796263426e4458aec8d1f7fd24be, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 1
+    shakeSpeed: 1
+    shakeAmount: 1
+  - text: 10 of them were severely injured.
+    textSize: 32
+    typeSpeed: 4
+    typingClip: {fileID: 8300000, guid: 55be796263426e4458aec8d1f7fd24be, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 1
+    shakeSpeed: 2
+    shakeAmount: 2
+  - text: 5 of them would never return.
+    textSize: 32
+    typeSpeed: 5
+    typingClip: {fileID: 8300000, guid: 55be796263426e4458aec8d1f7fd24be, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 1
+    shakeSpeed: 3
+    shakeAmount: 3
+  goodEnding:
+  - text: At 12:47, the police received a call and immediately responded.
+    textSize: 32
+    typeSpeed: 4
+    typingClip: {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  - text: All nearby buildings were evacuated as an emergency precaution, including
+      the "Hasbear" pizzeria and the nearby school.
+    textSize: 32
+    typeSpeed: 6
+    typingClip: {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  - text: When the police arrived, the criminal was arrested.
+    textSize: 32
+    typeSpeed: 3
+    typingClip: {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  - text: Nobody knew what had actually happened.
+    textSize: 32
+    typeSpeed: 3
+    typingClip: {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  - text: But everybody knew...
+    textSize: 32
+    typeSpeed: 3
+    typingClip: {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  - text: Something terrible just passed by...
+    textSize: 32
+    typeSpeed: 4
+    typingClip: {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}
+    typingVolume: 1
+    soundEveryCharacters: 1
+    shakeLetters: 0
+    shakeSpeed: 0
+    shakeAmount: 0
+  forceBadEnding: 0
+  forceGoodEnding: 0

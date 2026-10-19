@@ -19,6 +19,12 @@ public class DialoguePlayer : MonoBehaviour
     public AudioSource typingAudioSource;
 
     [Tooltip(
+        "Turn this off to silence the typing sound for every dialogue and " +
+        "every line. The typing animation itself keeps playing."
+    )]
+    public bool playTypingSounds = true;
+
+    [Tooltip(
         "Play at most one typing sound at a time. Prevents fast typing " +
         "from stacking sounds into an echo."
     )]
@@ -358,6 +364,16 @@ public class DialoguePlayer : MonoBehaviour
         int endIndex,
         int soundInterval)
     {
+        if (!playTypingSounds)
+        {
+            // Also silence a clip that was already playing when the toggle
+            // was turned off mid-line.
+            if (typingAudioSource != null && typingAudioSource.isPlaying)
+                typingAudioSource.Stop();
+
+            return;
+        }
+
         if (line.typingClip == null || typingAudioSource == null)
             return;
 

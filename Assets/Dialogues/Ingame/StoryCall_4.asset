@@ -1,0 +1,119 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a28d9b7530256eae7f40d29c8a7c2c1b, type: 3}
+  m_Name: StoryCall_4
+  m_EditorClassIdentifier: 
+  title: Story4
+  characterSprite: {fileID: 21300000, guid: 1620a71ff971cf24fa7799f8db415271, type: 3}
+  correctLineId: ambulance
+  conversation:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: (The caller speaks so quietly that you can barely make out his words.)
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: Mighty Street, 23... please send h-help...
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: There are a lot of them... They have guns...
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: (An older woman can be heard pleading in the background.)
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: Please! Don't shoot me!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: "Oh God, no... Damn it, they've spotted me! I need\u2014"
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: (The phone drops to the ground with a metallic clatter.)
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: ...
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: Mike, what the hell?! Why is there a FREAKING cellphone here? Can you tell
+      me?!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: S-sorry! I didn't mean to...
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: Shut up already! I've had enough of you, you blockhead!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: Oh, Mike, can you take a look at this?
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: We're still on a FREAKING call!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: Hey, you! If you're still listening, I'd suggest you DO NOT CALL THE FREAKING
+      POLICE!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: Let us do our job, and we'll leave quietly. Nobody else has to get hurt.
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: DO YOU UNDERSTAND?!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: (Several gunshots echo through the phone.)
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: EVERYONE HERE WILL DIE IF I HEAR A SINGLE SIREN!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: Ha-ha! Looks like you'll need to call an ambulance now!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: (The caller hangs up. It sounds like the phone has been destroyed.)
+  ending: {fileID: 11400000, guid: 0f9c68702f9005f479aa2dadf595c00a, type: 2}
+  policeLineId: police
+  policeReply:
+  - speaker: Operator
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: Mighty Street, 23. We've got your location. Police are on the way.
+  ambulanceLineId: ambulance
+  ambulanceReply:
+  - speaker: Operator
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: Possible bank robbery. Any wounded? Understood, sir.
+  psychoLineId: psycho
+  psychoReply:
+  - speaker: Psychological Service
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: (No response comes from the other end of the line.)
+  fireLineId: fire
+  fireReply:
+  - speaker: Operator
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: (No response comes from the other end of the line.)
+  pizzaLineId: pizza
+  pizzaReply:
+  - speaker: Hasbear Pizzeria
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: (No response comes from the other end of the line.)
+  serviceLineId: service
+  serviceReply:
+  - speaker: Household Services
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: (No response comes from the other end of the line.)
+  graveyardLineId: hotel
+  graveyardReply:
+  - speaker: Hotel Reception
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: (No response comes from the other end of the line.)
+  disconnectLineId: disconnect
+  disconnectReply: []
+  additionalReplies: []

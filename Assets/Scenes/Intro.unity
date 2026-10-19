@@ -394,7 +394,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: This game contains explicit language and themes of suicide.
+  m_text: This game contains  themes of suicide.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0737cb738bd5109469ba59b4cb74e351, type: 2}
   m_sharedMaterial: {fileID: 281967962810816550, guid: 0737cb738bd5109469ba59b4cb74e351, type: 2}
@@ -506,6 +506,7 @@ GameObject:
   - component: {fileID: 653900185}
   - component: {fileID: 653900184}
   - component: {fileID: 653900183}
+  - component: {fileID: 653900186}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -572,6 +573,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &653900186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 653900182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c88bec79b6014744bfc93f245873537, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toggleKey: 97
+  logChanges: 0
 --- !u!1 &1264367738
 GameObject:
   m_ObjectHideFlags: 0

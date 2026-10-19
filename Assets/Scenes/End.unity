@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 388916734}
   - component: {fileID: 388916733}
   - component: {fileID: 388916736}
+  - component: {fileID: 388916737}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -250,10 +251,13 @@ MonoBehaviour:
   dialogues:
   - {fileID: 11400000, guid: a4a866f75b61e054aa64f1ded2bb3907, type: 2}
   - {fileID: 11400000, guid: 926198e6b6d77a842aafc19dc0abea50, type: 2}
+  - {fileID: 11400000, guid: 9f9e3afc19a3fb74e809a45468279f5b, type: 2}
+  - {fileID: 11400000, guid: 0f9c68702f9005f479aa2dadf595c00a, type: 2}
   - {fileID: 11400000, guid: 6ff4b14dfd7c6cf4fbc87ab1f8e2acd8, type: 2}
   dialogueText: {fileID: 737253909}
   dialoguePanel: {fileID: 0}
   typingAudioSource: {fileID: 388916733}
+  playTypingSounds: 0
   avoidOverlappingTypingSounds: 1
   typingSoundMinInterval: 0
   forceGoodEnding: 0
@@ -303,6 +307,21 @@ MonoBehaviour:
           m_CallState: 2
     delay: 0
   callOnStart: 1
+--- !u!114 &388916737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 388916732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c88bec79b6014744bfc93f245873537, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toggleKey: 97
+  logChanges: 0
+  targetFrameRate: 60
 --- !u!1 &413365020
 GameObject:
   m_ObjectHideFlags: 0

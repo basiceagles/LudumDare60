@@ -35,18 +35,18 @@ MonoBehaviour:
   ending: {fileID: 0}
   policeLineId: police
   policeReply: []
-  psychiatristLineId: ambulance
-  psychiatristReply: []
-  ambulanceLineId: psycho
+  ambulanceLineId: ambulance
   ambulanceReply: []
+  psychoLineId: psycho
+  psychoReply: []
   fireLineId: fire
   fireReply: []
-  informationLineId: pizza
-  informationReply: []
-  line6Id: service
-  line6Reply: []
-  line7Id: hotel
-  line7Reply: []
-  line8Id: disconnect
-  line8Reply: []
+  pizzaLineId: pizza
+  pizzaReply: []
+  serviceLineId: service
+  serviceReply: []
+  graveyardLineId: hotel
+  graveyardReply: []
+  disconnectLineId: disconnect
+  disconnectReply: []
   additionalReplies: []

@@ -128,13 +128,16 @@ MonoBehaviour:
   - speaker: John
     characterSprite: {fileID: 21300000, guid: 1620a71ff971cf24fa7799f8db415271, type: 3}
     text: (The caller suddenly hangs up.)
-  psychiatristLineId: ambulance
-  psychiatristReply:
-  - speaker: John
-    characterSprite: {fileID: 21300000, guid: 1620a71ff971cf24fa7799f8db415271, type: 3}
-    text: (The caller suddenly hangs up.)
-  ambulanceLineId: psycho
+  ambulanceLineId: ambulance
   ambulanceReply:
+  - speaker: ' ...'
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: (The caller continues talking to the person on the other end of the line.)
+  - speaker: ' ...'
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: (It seems like he just wants to tell someone about his troubles.)
+  psychoLineId: psycho
+  psychoReply:
   - speaker: ' ...'
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
     text: (The caller continues talking to the person on the other end of the line.)
@@ -146,23 +149,23 @@ MonoBehaviour:
   - speaker: John
     characterSprite: {fileID: 21300000, guid: 1620a71ff971cf24fa7799f8db415271, type: 3}
     text: (The caller suddenly hangs up.)
-  informationLineId: pizza
-  informationReply:
+  pizzaLineId: pizza
+  pizzaReply:
   - speaker: John
     characterSprite: {fileID: 21300000, guid: 1620a71ff971cf24fa7799f8db415271, type: 3}
     text: (The caller suddenly hangs up.)
-  line6Id: service
-  line6Reply:
+  serviceLineId: service
+  serviceReply:
   - speaker: John
     characterSprite: {fileID: 21300000, guid: 1620a71ff971cf24fa7799f8db415271, type: 3}
     text: (The caller suddenly hangs up.)
-  line7Id: hotel
-  line7Reply:
+  graveyardLineId: hotel
+  graveyardReply:
   - speaker: John
     characterSprite: {fileID: 21300000, guid: 1620a71ff971cf24fa7799f8db415271, type: 3}
     text: (The caller suddenly hangs up.)
-  line8Id: disconnect
-  line8Reply:
+  disconnectLineId: disconnect
+  disconnectReply:
   - speaker: John
     characterSprite: {fileID: 21300000, guid: 1620a71ff971cf24fa7799f8db415271, type: 3}
     text: (The caller suddenly hangs up.)
