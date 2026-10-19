@@ -26,7 +26,7 @@ MonoBehaviour:
     shakeLetters: 0
     shakeSpeed: 0
     shakeAmount: 0
-  - text: An unknown person attempted to plant a bomb near the embassy.
+  - text: An unknown person attempted to plant a bomb near the parliament building
     textSize: 32
     typeSpeed: 4
     typingClip: {fileID: 8300000, guid: e4c4dd71b69ffa94ea7d564faa16e048, type: 3}
@@ -36,7 +36,7 @@ MonoBehaviour:
     shakeSpeed: 0
     shakeAmount: 0
   badEnding:
-  - text: At 12:45 AM, a loud explosion was heard near Bluesky Lane.
+  - text: At 12:45 PM, a loud explosion was heard near Bluesky Lane.
     textSize: 32
     typeSpeed: 3
     typingClip: {fileID: 8300000, guid: e4c4dd71b69ffa94ea7d564faa16e048, type: 3}
@@ -45,7 +45,7 @@ MonoBehaviour:
     shakeLetters: 0
     shakeSpeed: 0
     shakeAmount: 0
-  - text: At 12:48 AM, the police and emergency services arrived.
+  - text: At 12:48 PM, the police and emergency services arrived.
     textSize: 32
     typeSpeed: 3
     typingClip: {fileID: 8300000, guid: e4c4dd71b69ffa94ea7d564faa16e048, type: 3}
@@ -63,7 +63,7 @@ MonoBehaviour:
     shakeLetters: 0
     shakeSpeed: 0
     shakeAmount: 0
-  - text: The embassy building had been completely destroyed.
+  - text: The parliament building had been completely destroyed.
     textSize: 32
     typeSpeed: 4
     typingClip: {fileID: 8300000, guid: e4c4dd71b69ffa94ea7d564faa16e048, type: 3}
@@ -72,7 +72,7 @@ MonoBehaviour:
     shakeLetters: 0
     shakeSpeed: 0
     shakeAmount: 0
-  - text: But something terrible had just happened...
+  - text: "But that wasn\u2019t everything"
     textSize: 32
     typeSpeed: 3
     typingClip: {fileID: 8300000, guid: e4c4dd71b69ffa94ea7d564faa16e048, type: 3}
@@ -128,7 +128,7 @@ MonoBehaviour:
     shakeSpeed: 3
     shakeAmount: 3
   goodEnding:
-  - text: At 12:47, the police received a call and immediately responded.
+  - text: At 12:47 PM, the police received a call and immediately responded.
     textSize: 32
     typeSpeed: 4
     typingClip: {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}
