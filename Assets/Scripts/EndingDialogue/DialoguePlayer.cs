@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class DialoguePlayer : MonoBehaviour
@@ -37,11 +38,22 @@ public class DialoguePlayer : MonoBehaviour
     [Min(0f)]
     public float typingSoundMinInterval = 0f;
 
+    [Header("Events")]
+
+    [Tooltip(
+        "Fired once after EVERY dialogue has finished - whether the last " +
+        "line played through by itself or the whole sequence was skipped " +
+        "with StopDialogue(). Every entry is invoked in order, so use it " +
+        "for the ending scene load, credits, a sound, etc."
+    )]
+    public List<UnityEvent> onAllDialoguesFinished = new List<UnityEvent>();
+
     [Header("Debug")]
     public bool forceGoodEnding;
     public bool forceBadEnding;
 
     private bool isPlaying;
+    private bool finishedEventsFired;
     private bool isTyping;
     private bool skipTypingRequested;
     private bool advanceRequested;
@@ -71,6 +83,21 @@ public class DialoguePlayer : MonoBehaviour
             else
             {
                 // Click while the line is complete: advance.
+                advanceRequested = true;
+            }
+        }
+
+        if (Mouse.current.rightButton.wasPressedThisFrame)
+        {
+            if (isTyping)
+            {
+                skipTypingRequested = true;
+
+                if (typingAudioSource != null)
+                    typingAudioSource.Stop();
+            }
+            else
+            {
                 advanceRequested = true;
             }
         }
@@ -153,6 +180,7 @@ public class DialoguePlayer : MonoBehaviour
         isTyping = false;
         skipTypingRequested = false;
         advanceRequested = false;
+        finishedEventsFired = false;
 
         dialogueCoroutine = StartCoroutine(
             PlayAllDialogues(goodEnding)
@@ -230,6 +258,30 @@ public class DialoguePlayer : MonoBehaviour
         isPlaying = false;
         isTyping = false;
         dialogueCoroutine = null;
+
+        // Every dialogue has been played through: let the reactions set up
+        // in the Inspector run. The coroutine is already cleared, so a
+        // listener may safely start a new one (PlayDialogue).
+        FireFinishedEvents();
+    }
+
+    // Invokes onAllDialoguesFinished exactly once per playback run, so the
+    // natural end and StopDialogue() can never both trigger it.
+    private void FireFinishedEvents()
+    {
+        if (finishedEventsFired)
+            return;
+
+        finishedEventsFired = true;
+
+        if (onAllDialoguesFinished == null)
+            return;
+
+        foreach (UnityEvent finishedEvent in onAllDialoguesFinished)
+        {
+            if (finishedEvent != null)
+                finishedEvent.Invoke();
+        }
     }
 
     private IEnumerator PlayLine(DialogueLine line)
@@ -640,6 +692,10 @@ public class DialoguePlayer : MonoBehaviour
 
     public void StopDialogue()
     {
+        // Only counts as "skipped to the end" if a run was active, so
+        // stopping something that never started fires nothing.
+        bool wasPlaying = isPlaying;
+
         if (dialogueCoroutine != null)
         {
             StopCoroutine(dialogueCoroutine);
@@ -662,5 +718,8 @@ public class DialoguePlayer : MonoBehaviour
 
         if (dialoguePanel != null)
             dialoguePanel.SetActive(false);
+
+        if (wasPlaying)
+            FireFinishedEvents();
     }
 }

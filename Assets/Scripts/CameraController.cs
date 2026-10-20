@@ -25,6 +25,14 @@ public class CameraController : MonoBehaviour
     [Min(0f)]
     public float sensitivity = 1f;
 
+    [Header("WASD Rotation")]
+    [Tooltip(
+        "Rotate the camera with W/A/S/D just like edge scrolling: " +
+        "A/D turn left/right, W/S tilt up/down. Uses the same speed, " +
+        "sensitivity and rotation limits as the mouse borders."
+    )]
+    public bool wasdRotationEnabled = true;
+
     [Header("Right Mouse Zoom (toggle)")]
     [Tooltip("Click the right mouse button to toggle between the default and zoomed FOV.")]
     public bool rmbZoomEnabled = true;
@@ -81,19 +89,36 @@ public class CameraController : MonoBehaviour
             targetFov = isZoomed ? zoomFov : defaultFov;
         }
 
-        bool canRotate = edgeScrollingEnabled && !(blockRotationWhileZoomed && isZoomed);
+        bool canRotate = !(blockRotationWhileZoomed && isZoomed);
+
         if (canRotate)
         {
-            Vector2 mousePos = Mouse.current.position.ReadValue();
-
             float horizontal = 0f;
             float vertical = 0f;
 
-            if (mousePos.x <= borderSize) horizontal = -1f;
-            else if (mousePos.x >= Screen.width - borderSize) horizontal = 1f;
+            if (edgeScrollingEnabled)
+            {
+                Vector2 mousePos = Mouse.current.position.ReadValue();
 
-            if (mousePos.y <= borderSize) vertical = 1f;
-            else if (mousePos.y >= Screen.height - borderSize) vertical = -1f;
+                if (mousePos.x <= borderSize) horizontal = -1f;
+                else if (mousePos.x >= Screen.width - borderSize) horizontal = 1f;
+
+                if (mousePos.y <= borderSize) vertical = 1f;
+                else if (mousePos.y >= Screen.height - borderSize) vertical = -1f;
+            }
+
+            if (wasdRotationEnabled && Keyboard.current != null)
+            {
+                // A/D = turn left/right. W = tilt up, S = tilt down.
+                if (Keyboard.current.aKey.isPressed) horizontal -= 1f;
+                if (Keyboard.current.dKey.isPressed) horizontal += 1f;
+                if (Keyboard.current.wKey.isPressed) vertical -= 1f;
+                if (Keyboard.current.sKey.isPressed) vertical += 1f;
+
+                // Held keys must not beat the rotation limits faster.
+                horizontal = Mathf.Clamp(horizontal, -1f, 1f);
+                vertical = Mathf.Clamp(vertical, -1f, 1f);
+            }
 
             float speed = rotateSpeed * sensitivity;
             yaw = Mathf.Clamp(yaw + horizontal * speed * Time.deltaTime, minSide, maxSide);

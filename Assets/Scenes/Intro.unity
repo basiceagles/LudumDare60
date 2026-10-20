@@ -394,7 +394,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: This game contains  themes of suicide.
+  m_text: This game contains themes of suicide.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0737cb738bd5109469ba59b4cb74e351, type: 2}
   m_sharedMaterial: {fileID: 281967962810816550, guid: 0737cb738bd5109469ba59b4cb74e351, type: 2}
@@ -526,7 +526,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b57a7ac48a4430418a74bd4027d03ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: Main Game
+  sceneToLoad: Prologue
   useLoadingScreen: 0
 --- !u!114 &653900184
 MonoBehaviour:
@@ -587,6 +587,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   toggleKey: 97
   logChanges: 0
+  targetFrameRate: 60
 --- !u!1 &1264367738
 GameObject:
   m_ObjectHideFlags: 0

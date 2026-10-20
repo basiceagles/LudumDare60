@@ -124,7 +124,7 @@ MonoBehaviour:
     shakeSpeed: 3
     shakeAmount: 3
   goodEnding:
-  - text: Fortunately, a man standing near the cellphone immediately called 911.
+  - text: Fortunately, a man standing near the payphone immediately called 911.
     textSize: 32
     typeSpeed: 5
     typingClip: {fileID: 8300000, guid: 0f1023c9642bb0b4392fe4f07dfbf056, type: 3}

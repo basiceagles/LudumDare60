@@ -21,7 +21,7 @@ MonoBehaviour:
     text: Good morning, sir!
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: I've recently moved to this town and accidentally found this cellphone.
+    text: I've recently moved to this town and accidentally found this payphone.
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
     text: I've heard from all my friends that something weird has been happening
