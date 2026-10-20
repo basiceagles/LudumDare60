@@ -75,9 +75,6 @@ MonoBehaviour:
     text: ' Who am I talking to???'
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: "I\u2019ll get to them!!!"
-  - speaker: Caller
-    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
     text: "They\u2019ll answer to me for everything."
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
@@ -87,16 +84,23 @@ MonoBehaviour:
     text: ...
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: "they\u2019ll answer\u2026"
+    text: Who are you?
   ending: {fileID: 0}
   policeLineId: police
   policeReply:
   - speaker: Operator
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: Kill you? With flower petals? Did you know that playing pranks on the police
-      is a bad idea?!
+    text: 'Cobb? Yeah, buddy, I hear you. What''s that? Really? (laughter on the
+      line, several voices)
+
+'
   ambulanceLineId: ambulance
-  ambulanceReply: []
+  ambulanceReply:
+  - speaker: Operator
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: 'Not our area. Let the shrinks deal with it.
+
+'
   psychoLineId: psycho
   psychoReply:
   - speaker: Psychological Service
@@ -110,15 +114,39 @@ MonoBehaviour:
     text: (sigh)
   - speaker: Psychological Service
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: And why hasn't he picked him up yet?!
+    text: "And why haven't they locked him up yet\u2014"
   fireLineId: fire
-  fireReply: []
+  fireReply:
+  - speaker: Operator
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: 'I don''t have time for your ravings.
+
+'
   pizzaLineId: pizza
-  pizzaReply: []
+  pizzaReply:
+  - speaker: Operator
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: 'We take orders, not crazy talk. Have a good day.
+
+'
   serviceLineId: service
-  serviceReply: []
+  serviceReply:
+  - speaker: Operator
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: 'Sounds like you''ve got a screw loose, but I''m not the guy to tighten
+      it.
+
+'
   graveyardLineId: hotel
-  graveyardReply: []
+  graveyardReply:
+  - speaker: Receptionist
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: 'Do you want a room or not? If not, get off the line.
+
+'
   disconnectLineId: disconnect
-  disconnectReply: []
+  disconnectReply:
+  - speaker: ...
+    characterSprite: {fileID: 0}
+    text: ...
   additionalReplies: []

@@ -18,19 +18,20 @@ MonoBehaviour:
   conversation:
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: Hey! Hey! I'm on a line? They're killing me! I said, they're killing me!
+    text: Hey! Hey! I'm on a line? They're killing her! I said, they're killing my
+      neighbor!
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
     text: In the house across the street!
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: My neighbor lives there, you know!
+    text: My neighbor lives there.
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
     text: Roxy... Nah! Rihanna! Whatever!
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: "I\u2019ve lived here for ages"
+    text: "I\u2019ve lived here for ages."
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
     text: (coughing)
@@ -51,10 +52,10 @@ MonoBehaviour:
     text: "Oh, I really don\u2019t\u2026"
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: "They\u2019re heading into the building!"
+    text: About thirty minutes ago, they went into the building.
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: and flower petals are falling behind them.
+    text: And there were flower petals falling behind them.
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
     text: "Petals! Red ones! That\u2019s a bad omen - it\u2019s something satanic."
@@ -84,8 +85,43 @@ MonoBehaviour:
   policeReply:
   - speaker: Operator
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: Kill you? With flower petals? Did you know that playing pranks on the police
-      is a bad idea?!
+    text: 'Copy that. There''s a unit nearby, they''ll be right there. Stay on the
+      line, ma''am.
+
+      
+
+'
+  - speaker: Operator
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: ...
+  - speaker: Operator
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: '(radio, static) Dispatch, we''re at the entrance. We hear noise on the
+      second floor, going in.
+
+
+'
+  - speaker: Operator
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: '(radio, door crashing) Hands! Show me your hands! (sounds of a scuffle)
+
+'
+  - speaker: Unknown man
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: "What the hell?! Don\u2019t touch my wife!\n"
+  - speaker: Unknown woman
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: 'Leave him alone!
+
+'
+  - speaker: Unknown man
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: This is some kind of mistake, I swear!
+  - speaker: Operator
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: '(radio crackles and cuts out)
+
+'
   ambulanceLineId: ambulance
   ambulanceReply:
   - speaker: Operator
@@ -95,7 +131,12 @@ MonoBehaviour:
   psychoReply:
   - speaker: ...
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: I understand you've had a tough day. If you'd like, we can talk about it.
+    text: 'Ma''am, take a deep breath. Tell me, what''s worrying you so much? '
+  - speaker: ...
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: 'You know, I think you''re just lonely. What''s your name, ma''am?
+
+'
   fireLineId: fire
   fireReply:
   - speaker: Operator
@@ -107,12 +148,20 @@ MonoBehaviour:
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
     text: Sorry, we can't help you with that. Have a nice day!
   serviceLineId: service
-  serviceReply: []
+  serviceReply:
+  - speaker: Household services
+    characterSprite: {fileID: 0}
+    text: 'Excuse me? Murder isn''t really our line, ma''am. Have a good day.
+
+'
   graveyardLineId: hotel
   graveyardReply:
   - speaker: Hotel reception
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
     text: Sorry, we can't help you with that. Have a nice day!
   disconnectLineId: disconnect
-  disconnectReply: []
+  disconnectReply:
+  - speaker: ...
+    characterSprite: {fileID: 0}
+    text: (dial tone)
   additionalReplies: []

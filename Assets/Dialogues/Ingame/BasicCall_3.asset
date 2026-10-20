@@ -34,22 +34,43 @@ MonoBehaviour:
     text: You probably know someone, right?
   ending: {fileID: 0}
   policeLineId: police
-  policeReply: []
+  policeReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: Police? This is some kind of mistake.
   ambulanceLineId: ambulance
-  ambulanceReply: []
+  ambulanceReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: Oh, no, I'm okay! This is some kind of mistake.
   psychoLineId: psycho
-  psychoReply: []
+  psychoReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: Uhm... I'm feeling fine, thank you. The sink isn't.
   fireLineId: fire
-  fireReply: []
+  fireReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: No fire here! Just a lot of water.
   pizzaLineId: pizza
-  pizzaReply: []
+  pizzaReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: Pizza? Well... maybe later. First, the sink!
   serviceLineId: service
   serviceReply:
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
     text: Thanks!
   graveyardLineId: hotel
-  graveyardReply: []
+  graveyardReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: A hotel? Uh, it's not that bad yet!
   disconnectLineId: disconnect
-  disconnectReply: []
+  disconnectReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: ...
   additionalReplies: []

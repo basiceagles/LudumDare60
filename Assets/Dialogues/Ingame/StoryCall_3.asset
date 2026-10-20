@@ -36,6 +36,9 @@ MonoBehaviour:
     text: Today, I'm going to do something SPECIAL!
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: "The Parliament building. I\u2019ve had my eye on it for a long time."
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
     text: THEY MUST PAY!
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
@@ -51,7 +54,7 @@ MonoBehaviour:
 '
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: You probably know what I'm talking about!
+    text: 'You probably know what I''m talking about! '
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
     text: AND THEY DON'T CARE!

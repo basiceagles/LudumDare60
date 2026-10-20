@@ -57,13 +57,25 @@ MonoBehaviour:
     text: (sigh)
   ending: {fileID: 0}
   policeLineId: police
-  policeReply: []
+  policeReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: Police? No, no, I just wanted a pizza...
   ambulanceLineId: ambulance
-  ambulanceReply: []
+  ambulanceReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: Uhm... I'm not hurt. I'm just hungry.
   psychoLineId: psycho
-  psychoReply: []
+  psychoReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: What? I'm fine! I only asked for a pizzeria...
   fireLineId: fire
-  fireReply: []
+  fireReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: Nothing's on fire here! I just want some pizza.
   pizzaLineId: pizza
   pizzaReply:
   - speaker: Caller
@@ -73,9 +85,21 @@ MonoBehaviour:
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
     text: Goodbye!
   serviceLineId: service
-  serviceReply: []
+  serviceReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: A plumber? Do I sound like I need a plumber?
   graveyardLineId: hotel
-  graveyardReply: []
+  graveyardReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: A hotel? Uhm... I don't need a bed, I need a pizza.
   disconnectLineId: disconnect
-  disconnectReply: []
+  disconnectReply:
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: Hello? Hello?!
+  - speaker: Caller
+    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
+    text: (sigh)
   additionalReplies: []

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Story4
   characterSprite: {fileID: 21300000, guid: 1620a71ff971cf24fa7799f8db415271, type: 3}
-  correctLineId: ambulance
+  correctLineId: police
   conversation:
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
@@ -65,55 +65,53 @@ MonoBehaviour:
     text: Let us do our job, and we'll leave quietly. Nobody else has to get hurt.
   - speaker: Caller
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: DO YOU UNDERSTAND?!
-  - speaker: Caller
-    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: (Several gunshots echo through the phone.)
-  - speaker: Caller
-    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: EVERYONE HERE WILL DIE IF I HEAR A SINGLE SIREN!
-  - speaker: Caller
-    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: Ha-ha! Looks like you'll need to call an ambulance now!
-  - speaker: Caller
-    characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: (The caller hangs up. It sounds like the phone has been destroyed.)
+    text: "I\u2019m counting on you to be sensible."
   ending: {fileID: 11400000, guid: 0f9c68702f9005f479aa2dadf595c00a, type: 2}
   policeLineId: police
   policeReply:
   - speaker: Operator
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: Mighty Street, 23. We've got your location. Police are on the way.
+    text: Mighty Street, 23. We've got location. Police are on the way.
   ambulanceLineId: ambulance
   ambulanceReply:
   - speaker: Operator
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: Possible bank robbery. Any wounded? Understood, sir.
+    text: Is anyone hurt? Sir? Are you still on the line? Answer me, are you safe?
   psychoLineId: psycho
   psychoReply:
   - speaker: Psychological Service
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: (No response comes from the other end of the line.)
+    text: "Sir, I\u2019m afraid we can\u2019t help you. Please call the police."
   fireLineId: fire
   fireReply:
   - speaker: Operator
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: (No response comes from the other end of the line.)
+    text: "Fire department. I don\u2019t get it. Is this some kind of joke?"
   pizzaLineId: pizza
   pizzaReply:
   - speaker: Hasbear Pizzeria
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: (No response comes from the other end of the line.)
+    text: 'Pizzeria, hello. Send? Are you kidding me? Go to hell with jokes like
+      that.
+
+'
   serviceLineId: service
   serviceReply:
   - speaker: Household Services
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: (No response comes from the other end of the line.)
+    text: 'Household Services. Come again? We handle calls about pipes, sir. That''s
+      nothing to joke about.
+
+'
   graveyardLineId: hotel
   graveyardReply:
   - speaker: Hotel Reception
     characterSprite: {fileID: 21300000, guid: e48b250aad4258b41864c8d191a2c3f3, type: 3}
-    text: (No response comes from the other end of the line.)
+    text: Hotel, hello. You've got the wrong number, sir. This is a hotel, not a
+      police station.
   disconnectLineId: disconnect
-  disconnectReply: []
+  disconnectReply:
+  - speaker: ...
+    characterSprite: {fileID: 0}
+    text: ...
   additionalReplies: []
